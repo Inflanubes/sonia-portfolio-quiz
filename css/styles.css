@@ -807,6 +807,96 @@ body.lang-en .vault-badge.en { display: inline-block; }
   flex: 1;
 }
 
+/* Open answer field (experience quiz) */
+.open-answer-wrap {
+  margin: 1rem 0 0.5rem;
+  padding: 0.75rem;
+  border: 1px dashed rgba(0, 188, 212, 0.25);
+  border-radius: var(--radius-md);
+  background: rgba(0, 188, 212, 0.04);
+}
+
+.open-answer-label {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+.open-answer-input {
+  width: 100%;
+  background: var(--dark3);
+  border: 1px solid var(--dark4);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  padding: 0.5rem 0.75rem;
+  resize: none;
+  transition: border-color 0.2s;
+}
+
+.open-answer-input:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+/* Score board */
+.score-board {
+  background: var(--dark2);
+  border-bottom: 1px solid rgba(0, 188, 212, 0.12);
+  padding: 0.75rem 0;
+}
+
+.score-board-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.score-greeting {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.score-greeting strong {
+  color: var(--text-primary);
+}
+
+.score-sections {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.score-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+}
+
+.score-pass {
+  background: rgba(76, 175, 130, 0.15);
+  border: 1px solid rgba(76, 175, 130, 0.3);
+  color: #4CAF82;
+}
+
+.score-fail {
+  background: rgba(239, 83, 80, 0.12);
+  border: 1px solid rgba(239, 83, 80, 0.25);
+  color: #EF5350;
+}
+
+.score-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
 /* Submit button */
 .quiz-actions {
   padding-top: 0.25rem;

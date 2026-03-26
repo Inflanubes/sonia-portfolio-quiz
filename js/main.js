@@ -11,9 +11,9 @@ const STATE = {
   lang: 'es',
   unlockedCount: 0,
   sections: {
-    personal:   { unlocked: false, askedIndices: [] },
-    experience: { unlocked: false, askedIndices: [] },
-    skills:     { unlocked: false, askedIndices: [] }
+    personal:   { unlocked: false, askedIndices: [], score: null },
+    experience: { unlocked: false, askedIndices: [], score: null },
+    skills:     { unlocked: false, askedIndices: [], score: null }
   },
   currentQuestions: {}   // { sectionId: [questionObjects] }
 };
@@ -219,9 +219,33 @@ function submitQuiz(sectionId) {
   var questions = STATE.currentQuestions[sectionId];
   if (!questions || questions.length === 0) return;
 
+  // Check open-text bypass (experience section only)
+  if (sectionId === 'experience') {
+    var openField = document.getElementById('open-text-experience');
+    if (openField && openField.value.trim()) {
+      var openText = openField.value.trim();
+      STATE.sections[sectionId].score = '★';
+      TRACKER.log({
+        timestamp: new Date().toISOString(),
+        name:      STATE.visitorName,
+        email:     STATE.visitorEmail,
+        language:  STATE.lang.toUpperCase(),
+        section:   sectionId,
+        q1: 'Open answer', a1: openText,
+        q2: '', a2: '', q3: '', a3: '',
+        score: '★/open', result: 'Pass',
+        c1: true, c2: true, c3: true
+      });
+      updateScoreBoard(sectionId, '★');
+      unlockSection(sectionId);
+      return;
+    }
+  }
+
   var score = 0;
   var answeredQuestions = [];
   var answeredAnswers   = [];
+  var correctFlags      = [false, false, false];
   var allAnswered = true;
 
   questions.forEach(function (q, qIdx) {
@@ -235,7 +259,10 @@ function submitQuiz(sectionId) {
     var chosenIdx = parseInt(selected.value, 10);
     answeredQuestions.push(q.q[STATE.lang]);
     answeredAnswers.push(q.options[chosenIdx][STATE.lang]);
-    if (chosenIdx === q.correct) score++;
+    if (chosenIdx === q.correct) {
+      score++;
+      correctFlags[qIdx] = true;
+    }
   });
 
   if (!allAnswered) {
@@ -244,8 +271,10 @@ function submitQuiz(sectionId) {
   }
 
   var passed = score >= 2;
+  STATE.sections[sectionId].score = score + '/3';
+  updateScoreBoard(sectionId, score + '/3');
 
-  // Log to Google Sheets
+  // Log to Google Sheets (c1/c2/c3 flag wrong answers for red highlighting)
   TRACKER.log({
     timestamp: new Date().toISOString(),
     name:      STATE.visitorName,
@@ -259,7 +288,10 @@ function submitQuiz(sectionId) {
     q3: answeredQuestions[2] || '',
     a3: answeredAnswers[2]   || '',
     score:  score + '/3',
-    result: passed ? 'Pass' : 'Fail'
+    result: passed ? 'Pass' : 'Fail',
+    c1: correctFlags[0],
+    c2: correctFlags[1],
+    c3: correctFlags[2]
   });
 
   if (passed) {
@@ -373,6 +405,47 @@ function retryQuiz(sectionId) {
   hide(document.getElementById('result-' + sectionId));
   show(document.getElementById('questions-' + sectionId));
   show(document.getElementById('actions-' + sectionId));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCORE BOARD
+═══════════════════════════════════════════════════════════ */
+function updateScoreBoard(sectionId, scoreValue) {
+  var board = document.getElementById('scoreBoard');
+  if (!board) return;
+
+  // Show board and fill name
+  board.classList.remove('hidden');
+  var nameEs = document.getElementById('scoreNameEs');
+  var nameEn = document.getElementById('scoreNameEn');
+  if (nameEs) nameEs.textContent = STATE.visitorName;
+  if (nameEn) nameEn.textContent = STATE.visitorName;
+
+  // Store score
+  STATE.sections[sectionId].score = scoreValue;
+
+  // Rebuild score items
+  var labels = {
+    personal:   { es: 'Info Personal', en: 'Personal Info' },
+    experience: { es: 'Experiencia',   en: 'Experience'    },
+    skills:     { es: 'Skills',        en: 'Tech Skills'   }
+  };
+
+  var html = '';
+  ['personal', 'experience', 'skills'].forEach(function (id) {
+    var s = STATE.sections[id].score;
+    if (!s) return;
+    var passed = STATE.sections[id].unlocked || s === '★';
+    html +=
+      '<div class="score-item' + (passed ? ' score-pass' : ' score-fail') + '">' +
+        '<span class="score-label es">' + labels[id].es + '</span>' +
+        '<span class="score-label en">' + labels[id].en + '</span>' +
+        '<span class="score-value">' + s + '</span>' +
+      '</div>';
+  });
+
+  var container = document.getElementById('scoreSections');
+  if (container) container.innerHTML = html;
 }
 
 /* ═══════════════════════════════════════════════════════════

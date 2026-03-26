@@ -27,10 +27,8 @@
           <div class="welcome-icon-wrap">
             <img src="foto_cv.jpg" alt="Sonia Lacarra Molina" class="welcome-photo">
           </div>
-          <h2 class="cinzel welcome-title es" id="welcomeModalLabel">Sonia</h2>
-          <h2 class="cinzel welcome-title en" id="welcomeModalLabelEn">Sonia</h2>
-          <p class="welcome-access-title es">Accede al portfolio de Sonia</p>
-          <p class="welcome-access-title en">Access Sonia's portfolio</p>
+          <h2 class="cinzel welcome-title es" id="welcomeModalLabel">Accede al portfolio de <span class="text-teal">Sonia</span></h2>
+          <h2 class="cinzel welcome-title en" id="welcomeModalLabelEn">Access <span class="text-teal">Sonia</span>'s portfolio</h2>
           <p class="welcome-subtitle es">Introduce tus datos para acceder a los desafíos</p>
           <p class="welcome-subtitle en">Enter your details to access the challenges</p>
         </div>
@@ -162,6 +160,19 @@
         <span class="progress-pip" id="pip-experience" title="Experience"></span>
         <span class="progress-pip" id="pip-skills" title="Technical Skills"></span>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCORE BOARD (visible after first quiz attempt)
+═══════════════════════════════════════════════════════════ -->
+<div class="score-board hidden" id="scoreBoard">
+  <div class="container-xl">
+    <div class="score-board-inner">
+      <span class="score-greeting es">Hola, <strong id="scoreNameEs"></strong></span>
+      <span class="score-greeting en">Hi, <strong id="scoreNameEn"></strong></span>
+      <div class="score-sections" id="scoreSections"></div>
     </div>
   </div>
 </div>
@@ -301,6 +312,11 @@
               </div>
             </div>
             <div id="questions-experience" class="questions-wrap"></div>
+            <div class="open-answer-wrap">
+              <p class="open-answer-label es">¿Prefieres responder con tus propias palabras? Escribe aquí y desbloqueas directamente.</p>
+              <p class="open-answer-label en">Prefer to answer in your own words? Write here to unlock directly.</p>
+              <textarea id="open-text-experience" class="open-answer-input" rows="2" placeholder="..."></textarea>
+            </div>
             <div class="quiz-actions" id="actions-experience">
               <button class="btn btn-submit-quiz" onclick="submitQuiz('experience')">
                 <i class="bi bi-send-fill"></i>
