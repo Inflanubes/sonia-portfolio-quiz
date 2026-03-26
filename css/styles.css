@@ -29,33 +29,6 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   COCO MAT PRO — place files in assets/fonts/
-═══════════════════════════════════════════════════════════ */
-@font-face {
-  font-family: 'CocomatPro';
-  src: url('../assets/fonts/CocomatPro-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'CocomatPro';
-  src: url('../assets/fonts/CocomatPro-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'CocomatPro';
-  src: url('../assets/fonts/CocomatPro-Black.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* ═══════════════════════════════════════════════════════════
    FONTS & RESET
 ═══════════════════════════════════════════════════════════ */
 *, *::before, *::after {
@@ -75,7 +48,22 @@ body {
 }
 
 .cinzel {
-  font-family: 'CocomatPro', Georgia, serif;
+  font-family: 'Syne', Georgia, sans-serif;
+  font-weight: 700;
+}
+
+.dm-mono,
+.hero-tag,
+.section-eyebrow,
+.vault-badge,
+.quiz-section-label,
+.quiz-progress-info,
+.unlocked-badge,
+.progress-text,
+.tl-period,
+.tl-tags .tag-sm,
+.skills-group-title {
+  font-family: 'DM Mono', monospace;
 }
 
 .text-teal {
