@@ -223,6 +223,15 @@ body.lang-en .vault-badge.en { display: inline-block; }
   font-size: 2rem;
 }
 
+.welcome-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid rgba(0, 188, 212, 0.4);
+}
+
 .welcome-title {
   font-size: 1.4rem;
   color: var(--text-primary);
