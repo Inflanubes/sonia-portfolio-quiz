@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sonia Lacarra Molina — Portfolio Interactivo</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Google Fonts: Cinzel + DM Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="lang-es">
+
+<!-- ═══════════════════════════════════════════════════════════
+     WELCOME MODAL
+═══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="welcomeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="welcomeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content welcome-modal-content">
+      <div class="modal-body p-5">
+        <div class="text-center mb-4">
+          <div class="welcome-icon-wrap">
+            <span class="welcome-icon">✨</span>
+          </div>
+          <h2 class="cinzel welcome-title es" id="welcomeModalLabel">Bienvenido/a al Portfolio Interactivo</h2>
+          <h2 class="cinzel welcome-title en" id="welcomeModalLabelEn">Welcome to the Interactive Portfolio</h2>
+          <p class="welcome-subtitle es">Introduce tus datos para acceder a los desafíos</p>
+          <p class="welcome-subtitle en">Enter your details to access the challenges</p>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label welcome-label es" for="visitorName">Tu nombre</label>
+          <label class="form-label welcome-label en" for="visitorName">Your name</label>
+          <input type="text" id="visitorName" class="form-control welcome-input" autocomplete="off" placeholder="...">
+          <div class="invalid-feedback es">Por favor, introduce tu nombre.</div>
+          <div class="invalid-feedback en">Please enter your name.</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label welcome-label es" for="visitorEmail">Tu email</label>
+          <label class="form-label welcome-label en" for="visitorEmail">Your email</label>
+          <input type="email" id="visitorEmail" class="form-control welcome-input" placeholder="name@company.com">
+          <div class="invalid-feedback es">Por favor, introduce un email válido.</div>
+          <div class="invalid-feedback en">Please enter a valid email.</div>
+        </div>
+
+        <button class="btn btn-primary-custom w-100 btn-welcome-submit" onclick="startSession()">
+          <span class="es">Comenzar la aventura ⚡</span>
+          <span class="en">Start the adventure ⚡</span>
+        </button>
+
+        <p class="welcome-privacy es">Tus datos solo se usan para personalizar tu visita</p>
+        <p class="welcome-privacy en">Your data is only used to personalize your visit</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg fixed-top main-navbar">
+  <div class="container-xl">
+    <a class="navbar-brand cinzel nav-brand" href="#hero">
+      <span class="brand-accent">S</span>LM
+    </a>
+    <button class="navbar-toggler nav-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+        <li class="nav-item">
+          <a href="#sections" class="nav-link nav-link-custom es">Secciones</a>
+          <a href="#sections" class="nav-link nav-link-custom en">Sections</a>
+        </li>
+        <li class="nav-item">
+          <a href="#contact" class="nav-link nav-link-custom es">Contacto</a>
+          <a href="#contact" class="nav-link nav-link-custom en">Contact</a>
+        </li>
+        <li class="nav-item ms-lg-3">
+          <div class="lang-toggle">
+            <button id="btn-es" class="lang-btn active" onclick="setLang('es')">ES</button>
+            <button id="btn-en" class="lang-btn" onclick="setLang('en')">EN</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════ -->
+<section id="hero" class="hero-section">
+  <div class="hero-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="container-xl hero-container">
+    <div class="row align-items-center">
+      <div class="col-lg-8 col-xl-7">
+        <p class="hero-tag fade-up delay-1 es">✦ Disponible para nuevos proyectos</p>
+        <p class="hero-tag fade-up delay-1 en">✦ Available for new projects</p>
+
+        <h1 class="cinzel hero-name fade-up delay-2">
+          Sonia<br><span class="text-teal">Lacarra Molina</span>
+        </h1>
+
+        <p class="hero-title fade-up delay-3 es">AI Process Automation Consultant &nbsp;·&nbsp; Full Stack Developer &nbsp;·&nbsp; Spec-Driven Development</p>
+        <p class="hero-title fade-up delay-3 en">AI Process Automation Consultant &nbsp;·&nbsp; Full Stack Developer &nbsp;·&nbsp; Spec-Driven Development</p>
+
+        <p class="hero-subtitle fade-up delay-3 es">Analizo procesos empresariales, identifico ineficiencias y diseño soluciones que reducen costes de forma real y medible. Desarrollo con fundamentos sólidos — no vibe coding. Madrid, Spain.</p>
+        <p class="hero-subtitle fade-up delay-3 en">I analyze business processes, identify operational inefficiencies and design solutions that measurably reduce costs. Development with solid fundamentals — not vibe coding. Madrid, Spain.</p>
+
+        <div class="hero-cta fade-up delay-3">
+          <a href="#contact" class="btn btn-primary-custom es">Contactar</a>
+          <a href="#contact" class="btn btn-primary-custom en">Get in touch</a>
+          <a href="#sections" class="btn btn-outline-custom es">Ver secciones</a>
+          <a href="#sections" class="btn btn-outline-custom en">Explore sections</a>
+        </div>
+
+        <div class="hero-socials fade-up delay-3">
+          <a href="https://github.com/inflanubes" target="_blank" rel="noopener" class="social-pill">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/sonialacarramolina/" target="_blank" rel="noopener" class="social-pill">
+            <i class="bi bi-linkedin"></i> LinkedIn
+          </a>
+          <a href="mailto:lacarramolina@gmail.com" class="social-pill">
+            <i class="bi bi-envelope-fill"></i> Email
+          </a>
+          <a href="https://www.letsbebanana.com" target="_blank" rel="noopener" class="social-pill">
+            🍌 BeBanana
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PROGRESS BANNER
+═══════════════════════════════════════════════════════════ -->
+<div class="progress-banner" id="progressBanner">
+  <div class="container-xl">
+    <div class="progress-banner-inner">
+      <span class="progress-text">
+        <i class="bi bi-shield-lock-fill"></i>
+        <span class="es"><span class="unlocked-num">0</span> de 3 secciones desbloqueadas</span>
+        <span class="en"><span class="unlocked-num">0</span> of 3 sections unlocked</span>
+      </span>
+      <div class="progress-pips">
+        <span class="progress-pip" id="pip-personal" title="Personal Info"></span>
+        <span class="progress-pip" id="pip-experience" title="Experience"></span>
+        <span class="progress-pip" id="pip-skills" title="Technical Skills"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     LOCKED SECTIONS
+═══════════════════════════════════════════════════════════ -->
+<section id="sections" class="sections-area">
+  <div class="container-xl">
+    <div class="sections-header text-center">
+      <p class="section-eyebrow es">Desbloquea cada sección superando el reto</p>
+      <p class="section-eyebrow en">Unlock each section by completing the challenge</p>
+      <h2 class="cinzel section-main-title es">Tres <span class="text-teal">Bóvedas</span> te esperan</h2>
+      <h2 class="cinzel section-main-title en">Three <span class="text-teal">Vaults</span> await you</h2>
+    </div>
+
+    <div class="row g-4" id="cardsRow">
+
+      <!-- ═══ CARD 1: PERSONAL INFO — HP QUIZ ═══ -->
+      <div class="col-lg-4">
+        <div class="vault-card" id="card-personal" data-section="personal">
+
+          <!-- LOCKED -->
+          <div class="card-face locked-face" id="locked-personal">
+            <div class="vault-icon-wrap hp-icon-wrap">
+              <span class="vault-emoji">🧙</span>
+              <div class="lock-overlay"><i class="bi bi-lock-fill"></i></div>
+            </div>
+            <h3 class="cinzel vault-title es">Info Personal</h3>
+            <h3 class="cinzel vault-title en">Personal Info</h3>
+            <div class="vault-badge vault-badge-hp es">⚡ Reto Harry Potter</div>
+            <div class="vault-badge vault-badge-hp en">⚡ Harry Potter Challenge</div>
+            <p class="vault-teaser es">¿Quién soy? ¿Dónde estoy? ¿Cómo contactarme? Si conoces el mundo de Harry Potter, mereces saberlo.</p>
+            <p class="vault-teaser en">Who am I? Where am I? How to contact me? If you know the world of Harry Potter, you deserve to find out.</p>
+            <button class="btn btn-vault btn-vault-hp" onclick="startQuiz('personal')">
+              <i class="bi bi-magic"></i>
+              <span class="es">Comenzar reto</span>
+              <span class="en">Start challenge</span>
+            </button>
+          </div>
+
+          <!-- QUIZ -->
+          <div class="card-face quiz-face hidden" id="quiz-personal">
+            <div class="quiz-header">
+              <span class="quiz-icon">🧙</span>
+              <div class="quiz-header-text">
+                <p class="quiz-section-label es">Harry Potter Quiz</p>
+                <p class="quiz-section-label en">Harry Potter Quiz</p>
+                <p class="quiz-progress-info">
+                  <span class="es">Responde al menos 2 de 3</span>
+                  <span class="en">Answer at least 2 out of 3</span>
+                </p>
+              </div>
+            </div>
+            <div id="questions-personal" class="questions-wrap"></div>
+            <div class="quiz-actions" id="actions-personal">
+              <button class="btn btn-submit-quiz" onclick="submitQuiz('personal')">
+                <i class="bi bi-send-fill"></i>
+                <span class="es">Ver resultado</span>
+                <span class="en">See result</span>
+              </button>
+            </div>
+            <div id="result-personal" class="quiz-result hidden"></div>
+          </div>
+
+          <!-- UNLOCKED -->
+          <div class="card-face unlocked-face hidden" id="unlocked-personal">
+            <div class="unlocked-header">
+              <span class="unlock-emoji">🧙</span>
+              <div>
+                <h3 class="cinzel unlocked-title es">Info Personal</h3>
+                <h3 class="cinzel unlocked-title en">Personal Info</h3>
+                <span class="unlocked-badge es">✓ Desbloqueado</span>
+                <span class="unlocked-badge en">✓ Unlocked</span>
+              </div>
+            </div>
+            <div class="unlocked-content">
+              <div class="avatar-wrap">
+                <img src="foto_cv.jpg" alt="Sonia Lacarra Molina" class="avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                <div class="avatar-fallback" style="display:none">SL</div>
+              </div>
+              <h4 class="cinzel personal-name">Sonia Lacarra Molina</h4>
+              <ul class="contact-list">
+                <li><i class="bi bi-envelope-fill"></i> lacarramolina@gmail.com</li>
+                <li><i class="bi bi-telephone-fill"></i> +34 652 492 499</li>
+                <li><i class="bi bi-geo-alt-fill"></i> Madrid, Spain</li>
+                <li><i class="bi bi-github"></i> github.com/inflanubes</li>
+              </ul>
+              <div class="about-bio">
+                <p class="es">Consultora y <strong>Full Stack Developer</strong> con visión estratégica de negocio. Me especializo en analizar procesos empresariales, detectar ineficiencias y diseñar soluciones que <strong>reducen costes y optimizan operaciones</strong>.</p>
+                <p class="en">Consultant and <strong>Full Stack Developer</strong> with strategic business vision. I specialize in analyzing business processes, detecting inefficiencies and designing solutions that <strong>reduce costs and optimize operations</strong>.</p>
+                <p class="es">Mi <strong>Máster Internet Business (MIB)</strong> me da la metodología para diagnosticar una empresa antes de tocar código. Automatizaciones con IA bajo enfoque <strong>Spec-Driven Development</strong>: soluciones pensadas, no vibe coding.</p>
+                <p class="en">My <strong>Master in Internet Business (MIB)</strong> gives me the methodology to diagnose a company before writing a single line of code. AI automations with a <strong>Spec-Driven Development</strong> approach: thoughtful solutions, not vibe coding.</p>
+              </div>
+              <div class="highlight-quote es">"Primero entiendo el negocio. Luego escribo el código."</div>
+              <div class="highlight-quote en">"First I understand the business. Then I write the code."</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ CARD 2: EXPERIENCE — PERSONAL QUIZ ═══ -->
+      <div class="col-lg-4">
+        <div class="vault-card" id="card-experience" data-section="experience">
+
+          <!-- LOCKED -->
+          <div class="card-face locked-face" id="locked-experience">
+            <div class="vault-icon-wrap exp-icon-wrap">
+              <span class="vault-emoji">💼</span>
+              <div class="lock-overlay"><i class="bi bi-lock-fill"></i></div>
+            </div>
+            <h3 class="cinzel vault-title es">Experiencia</h3>
+            <h3 class="cinzel vault-title en">Experience</h3>
+            <div class="vault-badge vault-badge-exp es">🧭 Reto Personal</div>
+            <div class="vault-badge vault-badge-exp en">🧭 Personal Challenge</div>
+            <p class="vault-teaser es">Freelance, aviation, automotive... Mi trayectoria es única. Para verla, demuestra quién eres tú primero.</p>
+            <p class="vault-teaser en">Freelance, aviation, automotive... My career is one of a kind. To see it, show who you are first.</p>
+            <button class="btn btn-vault btn-vault-exp" onclick="startQuiz('experience')">
+              <i class="bi bi-person-check"></i>
+              <span class="es">Comenzar reto</span>
+              <span class="en">Start challenge</span>
+            </button>
+          </div>
+
+          <!-- QUIZ -->
+          <div class="card-face quiz-face hidden" id="quiz-experience">
+            <div class="quiz-header">
+              <span class="quiz-icon">💼</span>
+              <div class="quiz-header-text">
+                <p class="quiz-section-label es">Reto Personal</p>
+                <p class="quiz-section-label en">Personal Challenge</p>
+                <p class="quiz-progress-info">
+                  <span class="es">Responde al menos 2 de 3</span>
+                  <span class="en">Answer at least 2 out of 3</span>
+                </p>
+              </div>
+            </div>
+            <div id="questions-experience" class="questions-wrap"></div>
+            <div class="quiz-actions" id="actions-experience">
+              <button class="btn btn-submit-quiz" onclick="submitQuiz('experience')">
+                <i class="bi bi-send-fill"></i>
+                <span class="es">Ver resultado</span>
+                <span class="en">See result</span>
+              </button>
+            </div>
+            <div id="result-experience" class="quiz-result hidden"></div>
+          </div>
+
+          <!-- UNLOCKED -->
+          <div class="card-face unlocked-face hidden" id="unlocked-experience">
+            <div class="unlocked-header">
+              <span class="unlock-emoji">💼</span>
+              <div>
+                <h3 class="cinzel unlocked-title es">Experiencia</h3>
+                <h3 class="cinzel unlocked-title en">Experience</h3>
+                <span class="unlocked-badge es">✓ Desbloqueado</span>
+                <span class="unlocked-badge en">✓ Unlocked</span>
+              </div>
+            </div>
+            <div class="unlocked-content">
+
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-company">Freelance</div>
+                <div class="tl-role es">AI Process Automation Consultant &amp; Formadora</div>
+                <div class="tl-role en">AI Process Automation Consultant &amp; Trainer</div>
+                <div class="tl-period es">2024 – Presente · Madrid</div>
+                <div class="tl-period en">2024 – Present · Madrid</div>
+                <ul class="tl-bullets">
+                  <li class="es">Automatización del proceso completo de gestión de pacientes para SOMOS Psicólogos</li>
+                  <li class="en">Full patient management flow automation for SOMOS Psicólogos</li>
+                  <li class="es">Formación práctica en Make y N8N para equipos</li>
+                  <li class="en">Hands-on Make &amp; N8N training for teams</li>
+                </ul>
+                <div class="tl-tags">
+                  <span class="tag-sm">Make</span>
+                  <span class="tag-sm">N8N</span>
+                  <span class="tag-sm">AI Automation</span>
+                </div>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-company">GT Motive Spain</div>
+                <div class="tl-role">UK Automotive Technical Clerk</div>
+                <div class="tl-period es">Ene 2022 – Mar 2026 · Madrid (remoto)</div>
+                <div class="tl-period en">Jan 2022 – Mar 2026 · Madrid (remote)</div>
+                <ul class="tl-bullets">
+                  <li class="es">Seguimiento del 45% de la flota UK del Ministerio de Defensa</li>
+                  <li class="en">Monitoring 45% of UK Ministry of Defence vehicle fleet</li>
+                  <li class="es">Coordinación y liderazgo de departamento de 4 personas</li>
+                  <li class="en">4-person department coordination and leadership</li>
+                </ul>
+                <div class="tl-tags">
+                  <span class="tag-sm">Fleet Management</span>
+                  <span class="tag-sm">Team Leadership</span>
+                </div>
+              </div>
+
+              <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-company">Emirates Air Line</div>
+                <div class="tl-role">Cabin Supervisor &amp; SEP Trainer</div>
+                <div class="tl-period es">Sep 2013 – Ene 2020 · Dubai, UAE</div>
+                <div class="tl-period en">Sep 2013 – Jan 2020 · Dubai, UAE</div>
+                <ul class="tl-bullets">
+                  <li class="es">Liderazgo de equipos multinacionales de ~9 personas</li>
+                  <li class="en">Multinational team leadership of ~9 people</li>
+                  <li class="es">Instrucción SEP a nuevos tripulantes (hasta 25 alumnos)</li>
+                  <li class="en">SEP instruction for new crew (up to 25 students per class)</li>
+                </ul>
+                <div class="tl-tags">
+                  <span class="tag-sm">Leadership</span>
+                  <span class="tag-sm">SEP Training</span>
+                  <span class="tag-sm">B777 · A380</span>
+                </div>
+              </div>
+
+              <div class="projects-mini">
+                <h5 class="cinzel projects-mini-title es">Proyectos Destacados</h5>
+                <h5 class="cinzel projects-mini-title en">Featured Projects</h5>
+                <a href="https://www.letsbebanana.com" target="_blank" rel="noopener" class="project-mini-row">
+                  <span class="project-mini-name">🍌 BeBanana</span>
+                  <div class="tl-tags">
+                    <span class="tag-sm">React</span>
+                    <span class="tag-sm">Python</span>
+                    <span class="tag-sm">Azure CV</span>
+                  </div>
+                </a>
+                <a href="https://astralpet.es" target="_blank" rel="noopener" class="project-mini-row">
+                  <span class="project-mini-name">🐾 AstralPet</span>
+                  <div class="tl-tags">
+                    <span class="tag-sm">Make</span>
+                    <span class="tag-sm">N8N</span>
+                    <span class="tag-sm">AI</span>
+                  </div>
+                </a>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ═══ CARD 3: TECHNICAL SKILLS — TECH QUIZ ═══ -->
+      <div class="col-lg-4">
+        <div class="vault-card" id="card-skills" data-section="skills">
+
+          <!-- LOCKED -->
+          <div class="card-face locked-face" id="locked-skills">
+            <div class="vault-icon-wrap tech-icon-wrap">
+              <span class="vault-emoji">⚙️</span>
+              <div class="lock-overlay"><i class="bi bi-lock-fill"></i></div>
+            </div>
+            <h3 class="cinzel vault-title es">Skills Técnicos</h3>
+            <h3 class="cinzel vault-title en">Technical Skills</h3>
+            <div class="vault-badge vault-badge-tech es">💻 Reto Técnico</div>
+            <div class="vault-badge vault-badge-tech en">💻 Tech Challenge</div>
+            <p class="vault-teaser es">Frontend, backend, IA, automatizaciones... Aquí está mi arsenal técnico. ¿Sabes suficiente para verlo?</p>
+            <p class="vault-teaser en">Frontend, backend, AI, automations... Here's my technical arsenal. Do you know enough to unlock it?</p>
+            <button class="btn btn-vault btn-vault-tech" onclick="startQuiz('skills')">
+              <i class="bi bi-code-slash"></i>
+              <span class="es">Comenzar reto</span>
+              <span class="en">Start challenge</span>
+            </button>
+          </div>
+
+          <!-- QUIZ -->
+          <div class="card-face quiz-face hidden" id="quiz-skills">
+            <div class="quiz-header">
+              <span class="quiz-icon">⚙️</span>
+              <div class="quiz-header-text">
+                <p class="quiz-section-label es">Reto Técnico</p>
+                <p class="quiz-section-label en">Tech Challenge</p>
+                <p class="quiz-progress-info">
+                  <span class="es">Responde al menos 2 de 3</span>
+                  <span class="en">Answer at least 2 out of 3</span>
+                </p>
+              </div>
+            </div>
+            <div id="questions-skills" class="questions-wrap"></div>
+            <div class="quiz-actions" id="actions-skills">
+              <button class="btn btn-submit-quiz" onclick="submitQuiz('skills')">
+                <i class="bi bi-send-fill"></i>
+                <span class="es">Ver resultado</span>
+                <span class="en">See result</span>
+              </button>
+            </div>
+            <div id="result-skills" class="quiz-result hidden"></div>
+          </div>
+
+          <!-- UNLOCKED -->
+          <div class="card-face unlocked-face hidden" id="unlocked-skills">
+            <div class="unlocked-header">
+              <span class="unlock-emoji">⚙️</span>
+              <div>
+                <h3 class="cinzel unlocked-title es">Skills Técnicos</h3>
+                <h3 class="cinzel unlocked-title en">Technical Skills</h3>
+                <span class="unlocked-badge es">✓ Desbloqueado</span>
+                <span class="unlocked-badge en">✓ Unlocked</span>
+              </div>
+            </div>
+            <div class="unlocked-content">
+
+              <div class="skills-group">
+                <h6 class="skills-group-title">Frontend</h6>
+                <div class="skills-tags">
+                  <span class="tag-skill">HTML5</span>
+                  <span class="tag-skill">CSS3</span>
+                  <span class="tag-skill">JavaScript</span>
+                  <span class="tag-skill">React</span>
+                  <span class="tag-skill">Bootstrap</span>
+                </div>
+              </div>
+
+              <div class="skills-group">
+                <h6 class="skills-group-title">Backend</h6>
+                <div class="skills-tags">
+                  <span class="tag-skill">Python</span>
+                  <span class="tag-skill">Flask</span>
+                  <span class="tag-skill">SQL</span>
+                  <span class="tag-skill">SQLAlchemy</span>
+                  <span class="tag-skill">REST API</span>
+                  <span class="tag-skill">Git</span>
+                </div>
+              </div>
+
+              <div class="skills-group">
+                <h6 class="skills-group-title">AI &amp; Automations</h6>
+                <div class="skills-tags">
+                  <span class="tag-skill">Make</span>
+                  <span class="tag-skill">N8N</span>
+                  <span class="tag-skill">OpenAI / GPT</span>
+                  <span class="tag-skill">Azure Custom Vision</span>
+                  <span class="tag-skill">Retell</span>
+                  <span class="tag-skill">Airtable</span>
+                </div>
+              </div>
+
+              <div class="skills-group">
+                <h6 class="skills-group-title es">Metodologías</h6>
+                <h6 class="skills-group-title en">Methodologies</h6>
+                <div class="skills-tags">
+                  <span class="tag-skill">Scrum</span>
+                  <span class="tag-skill">Agile</span>
+                  <span class="tag-skill">Design Thinking</span>
+                  <span class="tag-skill">Spec-Driven Dev</span>
+                  <span class="tag-skill">OKR</span>
+                </div>
+              </div>
+
+              <div class="skills-group">
+                <h6 class="skills-group-title es">Formación</h6>
+                <h6 class="skills-group-title en">Education</h6>
+                <div class="edu-list">
+                  <div class="edu-item">
+                    <i class="bi bi-mortarboard-fill edu-icon"></i>
+                    <div class="edu-body">
+                      <div class="edu-degree es">IA Expert y Automatizaciones</div>
+                      <div class="edu-degree en">AI Expert &amp; Automations</div>
+                      <div class="edu-school">IA Winners · 2025</div>
+                    </div>
+                  </div>
+                  <div class="edu-item">
+                    <i class="bi bi-mortarboard-fill edu-icon"></i>
+                    <div class="edu-body">
+                      <div class="edu-degree es">Full Stack Developer</div>
+                      <div class="edu-degree en">Full Stack Developer</div>
+                      <div class="edu-school">4Geeks Academy · 2023–24</div>
+                    </div>
+                  </div>
+                  <div class="edu-item">
+                    <i class="bi bi-mortarboard-fill edu-icon"></i>
+                    <div class="edu-body">
+                      <div class="edu-degree">Máster Internet Business (MIB)</div>
+                      <div class="edu-school">ISDI · 2022–23</div>
+                    </div>
+                  </div>
+                  <div class="edu-item">
+                    <i class="bi bi-mortarboard-fill edu-icon"></i>
+                    <div class="edu-body">
+                      <div class="edu-degree">Digital Transformation &amp; Society</div>
+                      <div class="edu-school">Harvard University · 2023</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /row -->
+  </div><!-- /container -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     CONTACT
+═══════════════════════════════════════════════════════════ -->
+<section id="contact" class="contact-section">
+  <div class="container-xl">
+    <div class="contact-header text-center">
+      <p class="section-eyebrow es">¿Hablamos?</p>
+      <p class="section-eyebrow en">Let's connect</p>
+      <h2 class="cinzel section-main-title es">Contacta <span class="text-teal">conmigo</span></h2>
+      <h2 class="cinzel section-main-title en">Get in <span class="text-teal">touch</span></h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-sm-6 col-lg-3">
+        <a href="mailto:lacarramolina@gmail.com" class="contact-card">
+          <div class="contact-icon-wrap"><i class="bi bi-envelope-fill"></i></div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">lacarramolina@gmail.com</div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="tel:+34652492499" class="contact-card">
+          <div class="contact-icon-wrap"><i class="bi bi-telephone-fill"></i></div>
+          <div class="contact-label es">Teléfono</div>
+          <div class="contact-label en">Phone</div>
+          <div class="contact-value">+34 652 492 499</div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="https://www.linkedin.com/in/sonialacarramolina/" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon-wrap"><i class="bi bi-linkedin"></i></div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-value">sonialacarramolina</div>
+        </a>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <a href="https://github.com/inflanubes" target="_blank" rel="noopener" class="contact-card">
+          <div class="contact-icon-wrap"><i class="bi bi-github"></i></div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-value">inflanubes</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer class="main-footer">
+  <div class="container-xl text-center">
+    <p class="cinzel footer-brand"><span class="text-teal">S</span>LM</p>
+    <p class="footer-text es">Sonia Lacarra Molina &nbsp;·&nbsp; AI Process Automation Consultant &nbsp;·&nbsp; Madrid</p>
+    <p class="footer-text en">Sonia Lacarra Molina &nbsp;·&nbsp; AI Process Automation Consultant &nbsp;·&nbsp; Madrid</p>
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- App scripts (order matters) -->
+<script src="js/questions.js"></script>
+<script src="js/tracker.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
