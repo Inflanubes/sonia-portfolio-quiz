@@ -303,10 +303,10 @@ function unlockSection(sectionId) {
     unlockedFace.classList.add('reveal');
   }, 20);
 
-  // Flash the card border
+  // Flash + permanently mark card as unlocked
   var card = document.getElementById('card-' + sectionId);
   if (card) {
-    card.classList.add('just-unlocked');
+    card.classList.add('just-unlocked', 'is-unlocked');
     setTimeout(function () {
       card.classList.remove('just-unlocked');
     }, 1400);
