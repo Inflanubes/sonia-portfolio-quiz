@@ -356,8 +356,8 @@ function showFailResult(sectionId, score) {
     '<p class="result-title en">So close... but not quite!</p>' +
     '<p class="result-msg es">' + msg.es + '</p>' +
     '<p class="result-msg en">' + msg.en + '</p>' +
-    '<button class="btn btn-retry es" onclick="retryQuiz(\'' + sectionId + '\')">🔄 Intentar de nuevo</button>' +
-    '<button class="btn btn-retry en" onclick="retryQuiz(\'' + sectionId + '\')">🔄 Try again</button>';
+    '<button class="btn btn-retry es" onclick="retryQuiz(\'' + sectionId + '\')""><i class="bi bi-arrow-repeat"></i> Intentar de nuevo</button>' +
+    '<button class="btn btn-retry en" onclick="retryQuiz(\'' + sectionId + '\')"><i class="bi bi-arrow-repeat"></i> Try again</button>';
 
   show(resultEl);
 }
