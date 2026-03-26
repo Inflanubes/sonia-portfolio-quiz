@@ -2,9 +2,9 @@
  * tracker.js — Google Sheets logging via Google Apps Script Web App
  *
  * HOW TO CONFIGURE:
- *   1. Create your Google Sheet and Apps Script Web App (see README.md for full steps).
- *   2. Replace APPS_SCRIPT_URL below with your deployed Web App URL.
- *   3. The URL looks like: https://script.google.com/macros/s/XXXX.../exec
+ *   The URL below is injected at build time from the APPS_SCRIPT_URL environment variable.
+ *   Set it in your .env (local) or in the Vercel dashboard (production).
+ *   Never hardcode the real URL here — this placeholder is replaced by scripts/inject-env.js.
  *
  * NOTE: We use mode: 'no-cors' because the Apps Script response won't include
  *       CORS headers for browser requests. The POST still goes through and
@@ -13,8 +13,7 @@
 
 const TRACKER = {
 
-  // ← PASTE YOUR DEPLOYED APPS SCRIPT URL HERE
-  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbygw5_j39p7mPr6knG2zfnNAM2-W5Pbo5iI17anLdBQAEoy2JZurE3PEK4tsJLhlrpyxQ/exec',
+  APPS_SCRIPT_URL: '__APPS_SCRIPT_URL__',
 
   /**
    * Log a quiz submission to Google Sheets.
@@ -35,8 +34,8 @@ const TRACKER = {
    *   @param {string} data.result     — 'Pass' or 'Fail'
    */
   log(data) {
-    // Skip silently if URL has not been configured
-    if (!this.APPS_SCRIPT_URL || this.APPS_SCRIPT_URL.includes('REPLACE')) {
+    // Skip silently if URL has not been injected by the build step
+    if (!this.APPS_SCRIPT_URL || this.APPS_SCRIPT_URL.startsWith('__')) {
       console.info('[Tracker] Apps Script URL not configured — skipping log.');
       return;
     }
