@@ -100,6 +100,12 @@ body.lang-en button.en { display: inline; }
 body.lang-en li.en  { display: list-item; }
 body.lang-en p.en   { display: block; }
 
+/* inline-block bilingual elements — need explicit rules to beat component display styles */
+body.lang-es .vault-badge.en,
+body.lang-en .vault-badge.es { display: none; }
+body.lang-es .vault-badge.es,
+body.lang-en .vault-badge.en { display: inline-block; }
+
 /* Hidden utility (JS-controlled) */
 .hidden {
   display: none !important;
