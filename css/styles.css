@@ -1029,6 +1029,7 @@ body.lang-en .vault-badge.en { display: inline-block; }
 }
 
 .avatar-fallback {
+  display: flex;
   width: 90px;
   height: 90px;
   border-radius: 50%;

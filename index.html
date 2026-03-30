@@ -25,7 +25,7 @@
       <div class="modal-body p-5">
         <div class="text-center mb-4">
           <div class="welcome-icon-wrap">
-            <img src="foto_cv.jpg" alt="Sonia Lacarra Molina" class="welcome-photo">
+            <img src="foto_cv.jpg" alt="Sonia Lacarra Molina" class="welcome-photo" onerror="this.style.display='none'">
           </div>
           <h2 class="cinzel welcome-title es" id="welcomeModalLabel">Accede al portfolio de <span class="text-teal">Sonia</span></h2>
           <h2 class="cinzel welcome-title en" id="welcomeModalLabelEn">Access <span class="text-teal">Sonia</span>'s portfolio</h2>
@@ -36,7 +36,7 @@
         <div class="mb-3">
           <label class="form-label welcome-label es" for="visitorName">Tu nombre</label>
           <label class="form-label welcome-label en" for="visitorName">Your name</label>
-          <input type="text" id="visitorName" class="form-control welcome-input" autocomplete="off" placeholder="...">
+          <input type="text" id="visitorName" class="form-control welcome-input" autocomplete="name" placeholder="..." required>
           <div class="invalid-feedback es">Por favor, introduce tu nombre.</div>
           <div class="invalid-feedback en">Please enter your name.</div>
         </div>
@@ -44,7 +44,7 @@
         <div class="mb-4">
           <label class="form-label welcome-label es" for="visitorEmail">Tu email</label>
           <label class="form-label welcome-label en" for="visitorEmail">Your email</label>
-          <input type="email" id="visitorEmail" class="form-control welcome-input" placeholder="name@company.com">
+          <input type="email" id="visitorEmail" class="form-control welcome-input" autocomplete="email" placeholder="name@company.com" required>
           <div class="invalid-feedback es">Por favor, introduce un email válido.</div>
           <div class="invalid-feedback en">Please enter a valid email.</div>
         </div>
@@ -84,8 +84,8 @@
         </li>
         <li class="nav-item ms-lg-3">
           <div class="lang-toggle">
-            <button id="btn-es" class="lang-btn active" onclick="setLang('es')">ES</button>
-            <button id="btn-en" class="lang-btn" onclick="setLang('en')">EN</button>
+            <button id="btn-es" class="lang-btn active" onclick="setLang('es')" aria-pressed="true" aria-label="Cambiar a español">ES</button>
+            <button id="btn-en" class="lang-btn" onclick="setLang('en')" aria-pressed="false" aria-label="Switch to English">EN</button>
           </div>
         </li>
       </ul>
@@ -591,14 +591,14 @@
     </div>
     <div class="row g-4 justify-content-center">
       <div class="col-sm-6 col-lg-3">
-        <a href="mailto:lacarramolina@gmail.com" class="contact-card">
+        <a href="mailto:lacarramolina@gmail.com" class="contact-card" aria-label="Email: lacarramolina@gmail.com">
           <div class="contact-icon-wrap"><i class="bi bi-envelope-fill"></i></div>
           <div class="contact-label">Email</div>
           <div class="contact-value">lacarramolina@gmail.com</div>
         </a>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <a href="tel:+34652492499" class="contact-card">
+        <a href="tel:+34652492499" class="contact-card" aria-label="Teléfono / Phone: +34 652 492 499">
           <div class="contact-icon-wrap"><i class="bi bi-telephone-fill"></i></div>
           <div class="contact-label es">Teléfono</div>
           <div class="contact-label en">Phone</div>
@@ -606,14 +606,14 @@
         </a>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <a href="https://www.linkedin.com/in/sonialacarramolina/" target="_blank" rel="noopener" class="contact-card">
+        <a href="https://www.linkedin.com/in/sonialacarramolina/" target="_blank" rel="noopener" class="contact-card" aria-label="LinkedIn: sonialacarramolina">
           <div class="contact-icon-wrap"><i class="bi bi-linkedin"></i></div>
           <div class="contact-label">LinkedIn</div>
           <div class="contact-value">sonialacarramolina</div>
         </a>
       </div>
       <div class="col-sm-6 col-lg-3">
-        <a href="https://github.com/inflanubes" target="_blank" rel="noopener" class="contact-card">
+        <a href="https://github.com/inflanubes" target="_blank" rel="noopener" class="contact-card" aria-label="GitHub: inflanubes">
           <div class="contact-icon-wrap"><i class="bi bi-github"></i></div>
           <div class="contact-label">GitHub</div>
           <div class="contact-value">inflanubes</div>

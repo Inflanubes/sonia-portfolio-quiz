@@ -34,9 +34,10 @@ const TRACKER = {
    *   @param {string} data.result     — 'Pass' or 'Fail'
    */
   log(data) {
-    // Skip silently if URL has not been injected by the build step
+    // Queue locally if URL has not been injected by the build step
     if (!this.APPS_SCRIPT_URL || this.APPS_SCRIPT_URL.startsWith('__')) {
-      console.info('[Tracker] Apps Script URL not configured — skipping log.');
+      console.info('[Tracker] Apps Script URL not configured — queuing locally.');
+      this._queueLocally(data);
       return;
     }
 
@@ -46,8 +47,19 @@ const TRACKER = {
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(data)
     }).catch(function (err) {
-      // Silent fail — tracking should never break the UX
-      console.warn('[Tracker] Failed to log submission:', err);
+      // On network failure, save locally so data is not lost
+      console.warn('[Tracker] Failed to log submission — queuing locally:', err);
+      TRACKER._queueLocally(data);
     });
+  },
+
+  _queueLocally(data) {
+    try {
+      var queue = JSON.parse(sessionStorage.getItem('tracker_queue') || '[]');
+      queue.push(data);
+      sessionStorage.setItem('tracker_queue', JSON.stringify(queue));
+    } catch (e) {
+      console.warn('[Tracker] Could not save to sessionStorage:', e);
+    }
   }
 };

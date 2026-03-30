@@ -47,6 +47,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Set initial language
   setLang('es');
+
+  // Event delegation for retry buttons (avoids inline onclick injection risk)
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-action="retry"]');
+    if (btn) {
+      retryQuiz(btn.dataset.section);
+    }
+  });
 });
 
 /* ═══════════════════════════════════════════════════════════
@@ -63,6 +71,8 @@ function setLang(lang) {
   if (btnEs && btnEn) {
     btnEs.classList.toggle('active', lang === 'es');
     btnEn.classList.toggle('active', lang === 'en');
+    btnEs.setAttribute('aria-pressed', lang === 'es' ? 'true' : 'false');
+    btnEn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
   }
 }
 
@@ -85,7 +95,7 @@ function startSession() {
     valid = false;
   }
 
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
     emailInput.classList.add('is-invalid');
     valid = false;
   }
@@ -388,8 +398,8 @@ function showFailResult(sectionId, score) {
     '<p class="result-title en">So close... but not quite!</p>' +
     '<p class="result-msg es">' + msg.es + '</p>' +
     '<p class="result-msg en">' + msg.en + '</p>' +
-    '<button class="btn btn-retry es" onclick="retryQuiz(\'' + sectionId + '\')""><i class="bi bi-arrow-repeat"></i> Intentar de nuevo</button>' +
-    '<button class="btn btn-retry en" onclick="retryQuiz(\'' + sectionId + '\')"><i class="bi bi-arrow-repeat"></i> Try again</button>';
+    '<button class="btn btn-retry es" data-action="retry" data-section="' + escapeHtml(sectionId) + '"><i class="bi bi-arrow-repeat"></i> Intentar de nuevo</button>' +
+    '<button class="btn btn-retry en" data-action="retry" data-section="' + escapeHtml(sectionId) + '"><i class="bi bi-arrow-repeat"></i> Try again</button>';
 
   show(resultEl);
 }
