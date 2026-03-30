@@ -307,7 +307,7 @@ function submitQuiz(sectionId) {
   if (passed) {
     unlockSection(sectionId);
   } else {
-    showFailResult(sectionId, score);
+    showFailResult(sectionId, score, questions, correctFlags);
   }
 }
 
@@ -369,7 +369,7 @@ function unlockSection(sectionId) {
 /* ═══════════════════════════════════════════════════════════
    SHOW FAIL RESULT
 ═══════════════════════════════════════════════════════════ */
-function showFailResult(sectionId, score) {
+function showFailResult(sectionId, score, questions, correctFlags) {
   hide(document.getElementById('questions-' + sectionId));
   hide(document.getElementById('actions-' + sectionId));
 
@@ -392,12 +392,39 @@ function showFailResult(sectionId, score) {
 
   var msg = failMessages[sectionId] || { es: '¡Inténtalo de nuevo!', en: 'Try again!' };
 
+  // Build correct-answer review for wrong questions
+  var reviewHtml = '';
+  if (questions && questions.length) {
+    var wrongItems = '';
+    questions.forEach(function (q, idx) {
+      if (!correctFlags[idx]) {
+        var correctOpt = q.options[q.correct];
+        wrongItems +=
+          '<div class="answer-review-item">' +
+            '<p class="answer-review-q es">✗ ' + escapeHtml(q.q.es) + '</p>' +
+            '<p class="answer-review-q en">✗ ' + escapeHtml(q.q.en) + '</p>' +
+            '<p class="answer-review-correct es">✓ ' + escapeHtml(correctOpt.es) + '</p>' +
+            '<p class="answer-review-correct en">✓ ' + escapeHtml(correctOpt.en) + '</p>' +
+          '</div>';
+      }
+    });
+    if (wrongItems) {
+      reviewHtml =
+        '<div class="answer-review">' +
+          '<p class="answer-review-title es">Respuestas correctas:</p>' +
+          '<p class="answer-review-title en">Correct answers:</p>' +
+          wrongItems +
+        '</div>';
+    }
+  }
+
   resultEl.innerHTML =
     '<div class="result-score fail">' + score + '/3</div>' +
     '<p class="result-title es">Casi... ¡pero no es suficiente!</p>' +
     '<p class="result-title en">So close... but not quite!</p>' +
     '<p class="result-msg es">' + msg.es + '</p>' +
     '<p class="result-msg en">' + msg.en + '</p>' +
+    reviewHtml +
     '<button class="btn btn-retry es" data-action="retry" data-section="' + escapeHtml(sectionId) + '"><i class="bi bi-arrow-repeat"></i> Intentar de nuevo</button>' +
     '<button class="btn btn-retry en" data-action="retry" data-section="' + escapeHtml(sectionId) + '"><i class="bi bi-arrow-repeat"></i> Try again</button>';
 
@@ -418,23 +445,20 @@ function retryQuiz(sectionId) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SCORE BOARD
+   PROGRESS SCORES (in banner)
 ═══════════════════════════════════════════════════════════ */
 function updateScoreBoard(sectionId, scoreValue) {
-  var board = document.getElementById('scoreBoard');
-  if (!board) return;
-
-  // Show board and fill name
-  board.classList.remove('hidden');
-  var nameEs = document.getElementById('scoreNameEs');
-  var nameEn = document.getElementById('scoreNameEn');
-  if (nameEs) nameEs.textContent = STATE.visitorName;
-  if (nameEn) nameEn.textContent = STATE.visitorName;
-
   // Store score
   STATE.sections[sectionId].score = scoreValue;
 
-  // Rebuild score items
+  // Show visitor name in banner
+  var nameEl = document.getElementById('progressVisitorName');
+  if (nameEl && STATE.visitorName) {
+    nameEl.textContent = STATE.visitorName + ' ·';
+    nameEl.classList.remove('hidden');
+  }
+
+  // Rebuild per-section score chips
   var labels = {
     personal:   { es: 'Info Personal', en: 'Personal Info' },
     experience: { es: 'Experiencia',   en: 'Experience'    },
@@ -454,8 +478,11 @@ function updateScoreBoard(sectionId, scoreValue) {
       '</div>';
   });
 
-  var container = document.getElementById('scoreSections');
-  if (container) container.innerHTML = html;
+  var container = document.getElementById('progressScores');
+  if (container) {
+    container.innerHTML = html;
+    container.classList.remove('hidden');
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════

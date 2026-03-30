@@ -150,29 +150,25 @@
 <div class="progress-banner" id="progressBanner">
   <div class="container-xl">
     <div class="progress-banner-inner">
+
+      <!-- Left: name + unlock count -->
       <span class="progress-text">
+        <span class="progress-visitor-name hidden" id="progressVisitorName"></span>
         <i class="bi bi-shield-lock-fill"></i>
         <span class="es"><span class="unlocked-num">0</span> de 3 secciones desbloqueadas</span>
         <span class="en"><span class="unlocked-num">0</span> of 3 sections unlocked</span>
       </span>
+
+      <!-- Middle: per-section scores (shown after first attempt) -->
+      <div class="progress-scores hidden" id="progressScores"></div>
+
+      <!-- Right: pips -->
       <div class="progress-pips">
         <span class="progress-pip" id="pip-personal" title="Personal Info"></span>
         <span class="progress-pip" id="pip-experience" title="Experience"></span>
         <span class="progress-pip" id="pip-skills" title="Technical Skills"></span>
       </div>
-    </div>
-  </div>
-</div>
 
-<!-- ═══════════════════════════════════════════════════════════
-     SCORE BOARD (visible after first quiz attempt)
-═══════════════════════════════════════════════════════════ -->
-<div class="score-board hidden" id="scoreBoard">
-  <div class="container-xl">
-    <div class="score-board-inner">
-      <span class="score-greeting es">Hola, <strong id="scoreNameEs"></strong></span>
-      <span class="score-greeting en">Hi, <strong id="scoreNameEn"></strong></span>
-      <div class="score-sections" id="scoreSections"></div>
     </div>
   </div>
 </div>
