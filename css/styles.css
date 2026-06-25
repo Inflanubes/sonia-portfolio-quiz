@@ -1003,6 +1003,46 @@ body.lang-en .hero-tag.en { display: inline-block; }
   color: var(--dark);
 }
 
+/* Trivia "surprise" tag inside its question block */
+.trivia-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--teal);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Personal free-text answer box (reuses .open-answer-input look) */
+.personal-input {
+  margin-top: 0.25rem;
+}
+
+/* Trivia wink shown on submit (correct / close) */
+.result-wink {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 0.9rem;
+}
+
+.result-wink.wink-correct {
+  background: rgba(76, 175, 130, 0.15);
+  border: 1px solid rgba(76, 175, 130, 0.35);
+  color: #4CAF82;
+}
+
+.result-wink.wink-close {
+  background: rgba(0, 188, 212, 0.1);
+  border: 1px solid rgba(0, 188, 212, 0.3);
+  color: var(--teal);
+}
+
 /* ─ UNLOCKED FACE ─ */
 .unlocked-face {
   padding: 1.75rem;

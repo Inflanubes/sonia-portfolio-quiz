@@ -179,8 +179,8 @@
 <section id="sections" class="sections-area">
   <div class="container-xl">
     <div class="sections-header text-center">
-      <p class="section-eyebrow es">Desbloquea cada sección superando el reto</p>
-      <p class="section-eyebrow en">Unlock each section by completing the challenge</p>
+      <p class="section-eyebrow es">Desbloquea cada sección contándome algo de ti</p>
+      <p class="section-eyebrow en">Unlock each section by sharing a bit about you</p>
       <h2 class="cinzel section-main-title es">Tres <span class="text-teal">claves</span> te esperan</h2>
       <h2 class="cinzel section-main-title en">Three <span class="text-teal">Vaults</span> await you</h2>
     </div>
@@ -201,8 +201,8 @@
             <h3 class="cinzel vault-title en">Personal Info</h3>
             <div class="vault-badge vault-badge-hp es"><i class="bi bi-stars"></i> Reto Harry Potter</div>
             <div class="vault-badge vault-badge-hp en"><i class="bi bi-stars"></i> Harry Potter Challenge</div>
-            <p class="vault-teaser es">¿Quién soy? ¿Dónde estoy? ¿Cómo contactarme? Si conoces el mundo de Harry Potter, mereces saberlo.</p>
-            <p class="vault-teaser en">Who am I? Where am I? How to contact me? If you know the world of Harry Potter, you deserve to find out.</p>
+            <p class="vault-teaser es">¿Quién soy? ¿Dónde estoy? ¿Cómo contactarme? Cuéntame algo de ti y te lo enseño.</p>
+            <p class="vault-teaser en">Who am I? Where am I? How to contact me? Tell me a bit about you and I'll show you.</p>
             <button class="btn btn-vault btn-vault-hp" onclick="startQuiz('personal')">
               <i class="bi bi-magic"></i>
               <span class="es">Comenzar reto</span>
@@ -218,8 +218,8 @@
                 <p class="quiz-section-label es">Harry Potter Quiz</p>
                 <p class="quiz-section-label en">Harry Potter Quiz</p>
                 <p class="quiz-progress-info">
-                  <span class="es">Responde al menos 2 de 3</span>
-                  <span class="en">Answer at least 2 out of 3</span>
+                  <span class="es">1 sorpresa + 2 preguntas sobre ti</span>
+                  <span class="en">1 surprise + 2 questions about you</span>
                 </p>
               </div>
             </div>
@@ -227,8 +227,8 @@
             <div class="quiz-actions" id="actions-personal">
               <button class="btn btn-submit-quiz" onclick="submitQuiz('personal')">
                 <i class="bi bi-send-fill"></i>
-                <span class="es">Ver resultado</span>
-                <span class="en">See result</span>
+                <span class="es">Enviar y desbloquear</span>
+                <span class="en">Send & unlock</span>
               </button>
             </div>
             <div id="result-personal" class="quiz-result hidden"></div>
@@ -302,22 +302,17 @@
                 <p class="quiz-section-label es">Reto Personal</p>
                 <p class="quiz-section-label en">Personal Challenge</p>
                 <p class="quiz-progress-info">
-                  <span class="es">Responde al menos 2 de 3</span>
-                  <span class="en">Answer at least 2 out of 3</span>
+                  <span class="es">1 sorpresa + 2 preguntas sobre ti</span>
+                  <span class="en">1 surprise + 2 questions about you</span>
                 </p>
               </div>
             </div>
             <div id="questions-experience" class="questions-wrap"></div>
-            <div class="open-answer-wrap">
-              <p class="open-answer-label es">¿Prefieres responder con tus propias palabras? Escribe aquí y desbloqueas directamente.</p>
-              <p class="open-answer-label en">Prefer to answer in your own words? Write here to unlock directly.</p>
-              <textarea id="open-text-experience" class="open-answer-input" rows="2" placeholder="..."></textarea>
-            </div>
             <div class="quiz-actions" id="actions-experience">
               <button class="btn btn-submit-quiz" onclick="submitQuiz('experience')">
                 <i class="bi bi-send-fill"></i>
-                <span class="es">Ver resultado</span>
-                <span class="en">See result</span>
+                <span class="es">Enviar y desbloquear</span>
+                <span class="en">Send & unlock</span>
               </button>
             </div>
             <div id="result-experience" class="quiz-result hidden"></div>
@@ -434,8 +429,8 @@
             <h3 class="cinzel vault-title en">Technical Skills</h3>
             <div class="vault-badge vault-badge-tech es"><i class="bi bi-terminal"></i> Reto Técnico</div>
             <div class="vault-badge vault-badge-tech en"><i class="bi bi-terminal"></i> Tech Challenge</div>
-            <p class="vault-teaser es">Frontend, backend, IA, automatizaciones... Aquí está mi arsenal técnico. ¿Sabes suficiente para verlo?</p>
-            <p class="vault-teaser en">Frontend, backend, AI, automations... Here's my technical arsenal. Do you know enough to unlock it?</p>
+            <p class="vault-teaser es">Frontend, backend, IA, automatizaciones... Aquí está mi arsenal técnico. Comparte tu lado techie y es tuyo.</p>
+            <p class="vault-teaser en">Frontend, backend, AI, automations... Here's my technical arsenal. Share your techie side and it's yours.</p>
             <button class="btn btn-vault btn-vault-tech" onclick="startQuiz('skills')">
               <i class="bi bi-code-slash"></i>
               <span class="es">Comenzar reto</span>
@@ -451,8 +446,8 @@
                 <p class="quiz-section-label es">Reto Técnico</p>
                 <p class="quiz-section-label en">Tech Challenge</p>
                 <p class="quiz-progress-info">
-                  <span class="es">Responde al menos 2 de 3</span>
-                  <span class="en">Answer at least 2 out of 3</span>
+                  <span class="es">1 sorpresa + 2 preguntas sobre ti</span>
+                  <span class="en">1 surprise + 2 questions about you</span>
                 </p>
               </div>
             </div>
@@ -460,8 +455,8 @@
             <div class="quiz-actions" id="actions-skills">
               <button class="btn btn-submit-quiz" onclick="submitQuiz('skills')">
                 <i class="bi bi-send-fill"></i>
-                <span class="es">Ver resultado</span>
-                <span class="en">See result</span>
+                <span class="es">Enviar y desbloquear</span>
+                <span class="en">Send & unlock</span>
               </button>
             </div>
             <div id="result-skills" class="quiz-result hidden"></div>

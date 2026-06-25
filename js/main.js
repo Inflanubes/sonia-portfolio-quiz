@@ -1,5 +1,10 @@
 /**
- * main.js — Quiz engine, unlock flow, language toggle
+ * main.js — "Get to know you" engine, unlock flow, language toggle
+ *
+ * Each section shows 1 fun trivia (multiple choice) + 2 personal open
+ * questions (free text). The visitor unlocks a section by picking a trivia
+ * option AND writing an answer in both text boxes. Getting the trivia right
+ * is just a wink — it never blocks the unlock.
  */
 
 /* ═══════════════════════════════════════════════════════════
@@ -11,11 +16,11 @@ const STATE = {
   lang: 'es',
   unlockedCount: 0,
   sections: {
-    personal:   { unlocked: false, askedIndices: [], score: null },
-    experience: { unlocked: false, askedIndices: [], score: null },
-    skills:     { unlocked: false, askedIndices: [], score: null }
+    personal:   { unlocked: false, askedTrivia: [], askedPersonal: [] },
+    experience: { unlocked: false, askedTrivia: [], askedPersonal: [] },
+    skills:     { unlocked: false, askedTrivia: [], askedPersonal: [] }
   },
-  currentQuestions: {}   // { sectionId: [questionObjects] }
+  currentQuestions: {}   // { sectionId: { trivia: obj, personal: [obj, obj] } }
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -48,11 +53,11 @@ document.addEventListener('DOMContentLoaded', function () {
   // Set initial language
   setLang('es');
 
-  // Event delegation for retry buttons (avoids inline onclick injection risk)
+  // Event delegation for the "reveal section" button (shown after submitting)
   document.addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-action="retry"]');
+    var btn = e.target.closest('[data-action="reveal"]');
     if (btn) {
-      retryQuiz(btn.dataset.section);
+      unlockSection(btn.dataset.section);
     }
   });
 });
@@ -112,19 +117,16 @@ function startSession() {
 /* ═══════════════════════════════════════════════════════════
    QUESTION DRAWING — random, no repeats within a session
 ═══════════════════════════════════════════════════════════ */
-function drawQuestions(sectionId) {
-  var pool   = QUESTIONS[sectionId];
-  var asked  = STATE.sections[sectionId].askedIndices;
-
+function drawFromPool(pool, askedIndices, count) {
   // Build list of indices not yet asked
   var available = [];
   for (var i = 0; i < pool.length; i++) {
-    if (asked.indexOf(i) === -1) available.push(i);
+    if (askedIndices.indexOf(i) === -1) available.push(i);
   }
 
-  // If fewer than 3 available, reset the pool and use all
-  if (available.length < 3) {
-    STATE.sections[sectionId].askedIndices = [];
+  // If fewer than needed remain, reset and use the whole pool
+  if (available.length < count) {
+    askedIndices.length = 0;
     available = [];
     for (var j = 0; j < pool.length; j++) available.push(j);
   }
@@ -137,52 +139,69 @@ function drawQuestions(sectionId) {
     available[rand] = temp;
   }
 
-  // Pick first 3
-  var chosen = available.slice(0, 3);
+  var chosen = available.slice(0, count);
 
   // Mark as asked
-  STATE.sections[sectionId].askedIndices =
-    STATE.sections[sectionId].askedIndices.concat(chosen);
+  for (var m = 0; m < chosen.length; m++) askedIndices.push(chosen[m]);
 
-  // Return question objects
   return chosen.map(function (idx) {
     return Object.assign({}, pool[idx], { poolIndex: idx });
   });
 }
 
+function drawQuestions(sectionId) {
+  var section = STATE.sections[sectionId];
+  var trivia   = drawFromPool(QUESTIONS[sectionId].trivia,   section.askedTrivia,   1)[0];
+  var personal = drawFromPool(QUESTIONS[sectionId].personal, section.askedPersonal, 2);
+  return { trivia: trivia, personal: personal };
+}
+
 /* ═══════════════════════════════════════════════════════════
-   RENDER QUESTIONS
+   RENDER QUESTIONS — 1 trivia (multiple choice) + 2 free text
 ═══════════════════════════════════════════════════════════ */
-function renderQuestions(sectionId, questions) {
+function renderQuestions(sectionId, drawn) {
   var container = document.getElementById('questions-' + sectionId);
   if (!container) return;
 
-  var html = questions.map(function (q, qIdx) {
-    var optionsHtml = q.options.map(function (opt, oIdx) {
-      return (
-        '<label class="option-label" onclick="selectOption(this)">' +
-          '<input type="radio" name="q' + qIdx + '_' + sectionId + '" value="' + oIdx + '" class="option-radio">' +
-          '<span class="option-text es">' + escapeHtml(opt.es) + '</span>' +
-          '<span class="option-text en">' + escapeHtml(opt.en) + '</span>' +
-        '</label>'
-      );
-    }).join('');
-
+  // Trivia block (multiple choice)
+  var trivia = drawn.trivia;
+  var optionsHtml = trivia.options.map(function (opt, oIdx) {
     return (
-      '<div class="question-block" data-question="' + qIdx + '">' +
-        '<p class="question-text es">' + (qIdx + 1) + '. ' + escapeHtml(q.q.es) + '</p>' +
-        '<p class="question-text en">' + (qIdx + 1) + '. ' + escapeHtml(q.q.en) + '</p>' +
-        '<div class="options-list">' + optionsHtml + '</div>' +
+      '<label class="option-label" onclick="selectOption(this)">' +
+        '<input type="radio" name="trivia_' + sectionId + '" value="' + oIdx + '" class="option-radio">' +
+        '<span class="option-text es">' + escapeHtml(opt.es) + '</span>' +
+        '<span class="option-text en">' + escapeHtml(opt.en) + '</span>' +
+      '</label>'
+    );
+  }).join('');
+
+  var triviaHtml =
+    '<div class="question-block" data-block="trivia">' +
+      '<p class="trivia-tag es"><i class="bi bi-stars"></i> Pregunta sorpresa</p>' +
+      '<p class="trivia-tag en"><i class="bi bi-stars"></i> Surprise question</p>' +
+      '<p class="question-text es">' + escapeHtml(trivia.q.es) + '</p>' +
+      '<p class="question-text en">' + escapeHtml(trivia.q.en) + '</p>' +
+      '<div class="options-list">' + optionsHtml + '</div>' +
+    '</div>';
+
+  // Personal blocks (free text)
+  var personalHtml = drawn.personal.map(function (q, pIdx) {
+    return (
+      '<div class="question-block" data-block="personal' + pIdx + '">' +
+        '<p class="question-text es">' + escapeHtml(q.q.es) + '</p>' +
+        '<p class="question-text en">' + escapeHtml(q.q.en) + '</p>' +
+        '<textarea name="personal' + pIdx + '_' + sectionId + '" class="open-answer-input personal-input" rows="2" ' +
+          'data-placeholder-es="Escribe tu respuesta..." data-placeholder-en="Write your answer..." ' +
+          'placeholder="' + (STATE.lang === 'en' ? 'Write your answer...' : 'Escribe tu respuesta...') + '"></textarea>' +
       '</div>'
     );
   }).join('');
 
-  container.innerHTML = html;
+  container.innerHTML = triviaHtml + personalHtml;
 }
 
-/* Visual feedback when an option is clicked */
+/* Visual feedback when a trivia option is clicked */
 function selectOption(labelEl) {
-  // Deselect siblings in the same question block
   var block = labelEl.closest('.question-block');
   if (!block) return;
   var labels = block.querySelectorAll('.option-label');
@@ -209,10 +228,10 @@ function startQuiz(sectionId) {
     return;
   }
 
-  var questions = drawQuestions(sectionId);
-  STATE.currentQuestions[sectionId] = questions;
+  var drawn = drawQuestions(sectionId);
+  STATE.currentQuestions[sectionId] = drawn;
 
-  renderQuestions(sectionId, questions);
+  renderQuestions(sectionId, drawn);
 
   // Show quiz face, hide locked face
   hide(document.getElementById('locked-' + sectionId));
@@ -223,112 +242,97 @@ function startQuiz(sectionId) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SUBMIT QUIZ
+   SUBMIT — validate, log, show wink
 ═══════════════════════════════════════════════════════════ */
 function submitQuiz(sectionId) {
-  var questions = STATE.currentQuestions[sectionId];
-  if (!questions || questions.length === 0) return;
+  var drawn = STATE.currentQuestions[sectionId];
+  if (!drawn) return;
 
-  // Check open-text bypass (experience section only)
-  if (sectionId === 'experience') {
-    var openField = document.getElementById('open-text-experience');
-    if (openField && openField.value.trim()) {
-      var openText = openField.value.trim();
-      STATE.sections[sectionId].score = '★';
-      TRACKER.log({
-        timestamp: new Date().toISOString(),
-        name:      STATE.visitorName,
-        email:     STATE.visitorEmail,
-        language:  STATE.lang.toUpperCase(),
-        section:   sectionId,
-        q1: 'Open answer', a1: openText,
-        q2: '', a2: '', q3: '', a3: '',
-        score: '★/open', result: 'Pass',
-        c1: true, c2: true, c3: true
-      });
-      updateScoreBoard(sectionId, '★');
-      unlockSection(sectionId);
-      return;
-    }
-  }
+  var triviaSel = document.querySelector('input[name="trivia_' + sectionId + '"]:checked');
+  var text0El = document.querySelector('textarea[name="personal0_' + sectionId + '"]');
+  var text1El = document.querySelector('textarea[name="personal1_' + sectionId + '"]');
+  var text0 = text0El ? text0El.value.trim() : '';
+  var text1 = text1El ? text1El.value.trim() : '';
 
-  var score = 0;
-  var answeredQuestions = [];
-  var answeredAnswers   = [];
-  var correctFlags      = [false, false, false];
-  var allAnswered = true;
+  // Validate: trivia chosen + both text answers written
+  var missing = [];
+  if (!triviaSel) missing.push('trivia');
+  if (!text0)     missing.push('personal0');
+  if (!text1)     missing.push('personal1');
 
-  questions.forEach(function (q, qIdx) {
-    var selected = document.querySelector(
-      'input[name="q' + qIdx + '_' + sectionId + '"]:checked'
-    );
-    if (!selected) {
-      allAnswered = false;
-      return;
-    }
-    var chosenIdx = parseInt(selected.value, 10);
-    answeredQuestions.push(q.q[STATE.lang]);
-    answeredAnswers.push(q.options[chosenIdx][STATE.lang]);
-    if (chosenIdx === q.correct) {
-      score++;
-      correctFlags[qIdx] = true;
-    }
-  });
-
-  if (!allAnswered) {
-    highlightUnanswered(sectionId, questions.length);
+  if (missing.length) {
+    highlightMissing(sectionId, missing);
     return;
   }
 
-  var passed = score >= 2;
-  STATE.sections[sectionId].score = score + '/3';
-  updateScoreBoard(sectionId, score + '/3');
+  var chosenIdx     = parseInt(triviaSel.value, 10);
+  var triviaCorrect = chosenIdx === drawn.trivia.correct;
 
-  // Log to Google Sheets (c1/c2/c3 flag wrong answers for red highlighting)
+  // Log to Google Sheets (same column layout as before).
+  // q1/a1 = trivia, q2/a2 + q3/a3 = personal answers.
   TRACKER.log({
     timestamp: new Date().toISOString(),
     name:      STATE.visitorName,
     email:     STATE.visitorEmail,
     language:  STATE.lang.toUpperCase(),
     section:   sectionId,
-    q1: answeredQuestions[0] || '',
-    a1: answeredAnswers[0]   || '',
-    q2: answeredQuestions[1] || '',
-    a2: answeredAnswers[1]   || '',
-    q3: answeredQuestions[2] || '',
-    a3: answeredAnswers[2]   || '',
-    score:  score + '/3',
-    result: passed ? 'Pass' : 'Fail',
-    c1: correctFlags[0],
-    c2: correctFlags[1],
-    c3: correctFlags[2]
+    q1: drawn.trivia.q[STATE.lang],
+    a1: drawn.trivia.options[chosenIdx][STATE.lang],
+    q2: drawn.personal[0].q[STATE.lang], a2: text0,
+    q3: drawn.personal[1].q[STATE.lang], a3: text1,
+    score:  triviaCorrect ? '✓ trivia' : '✗ trivia',
+    result: STATE.lang === 'en' ? 'Completed' : 'Completado',
+    c1: triviaCorrect, c2: true, c3: true
   });
 
-  if (passed) {
-    unlockSection(sectionId);
-  } else {
-    showFailResult(sectionId, score, questions, correctFlags);
-  }
+  updateScoreBoard(sectionId);
+  showThankYou(sectionId, triviaCorrect);
 }
 
-/* Highlight questions that haven't been answered */
-function highlightUnanswered(sectionId, totalQuestions) {
-  for (var i = 0; i < totalQuestions; i++) {
-    var answered = document.querySelector(
-      'input[name="q' + i + '_' + sectionId + '"]:checked'
+/* Highlight blocks that are missing an answer */
+function highlightMissing(sectionId, missing) {
+  missing.forEach(function (block) {
+    var el = document.querySelector(
+      '#questions-' + sectionId + ' [data-block="' + block + '"]'
     );
-    if (!answered) {
-      var block = document.querySelector(
-        '#questions-' + sectionId + ' [data-question="' + i + '"]'
-      );
-      if (block) {
-        block.style.border = '1px solid rgba(239,83,80,0.5)';
-        setTimeout(function (b) {
-          return function () { b.style.border = ''; };
-        }(block), 1800);
-      }
+    if (el) {
+      el.style.border = '1px solid rgba(239,83,80,0.6)';
+      setTimeout(function (b) {
+        return function () { b.style.border = ''; };
+      }(el), 1800);
     }
-  }
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   THANK YOU — trivia wink + reveal button
+═══════════════════════════════════════════════════════════ */
+function showThankYou(sectionId, triviaCorrect) {
+  hide(document.getElementById('questions-' + sectionId));
+  hide(document.getElementById('actions-' + sectionId));
+
+  var resultEl = document.getElementById('result-' + sectionId);
+  if (!resultEl) return;
+
+  var wink = triviaCorrect
+    ? { es: '¡Acertaste la sorpresa! ✨', en: 'You nailed the surprise! ✨' }
+    : { es: 'Casi con la sorpresa 😉', en: 'Almost on the surprise 😉' };
+
+  resultEl.innerHTML =
+    '<div class="result-wink ' + (triviaCorrect ? 'wink-correct' : 'wink-close') + '">' +
+      '<span class="es">' + wink.es + '</span>' +
+      '<span class="en">' + wink.en + '</span>' +
+    '</div>' +
+    '<p class="result-title es">¡Gracias por compartir! 🙌</p>' +
+    '<p class="result-title en">Thanks for sharing! 🙌</p>' +
+    '<p class="result-msg es">Me encanta conocerte un poco mejor. Aquí tienes la sección.</p>' +
+    '<p class="result-msg en">I love getting to know you a little better. Here is the section.</p>' +
+    '<button class="btn btn-submit-quiz es" data-action="reveal" data-section="' + escapeHtml(sectionId) + '">' +
+      '<i class="bi bi-unlock-fill"></i> Ver la sección</button>' +
+    '<button class="btn btn-submit-quiz en" data-action="reveal" data-section="' + escapeHtml(sectionId) + '">' +
+      '<i class="bi bi-unlock-fill"></i> Reveal the section</button>';
+
+  show(resultEl);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -367,89 +371,11 @@ function unlockSection(sectionId) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   SHOW FAIL RESULT
+   PROGRESS SCORES (in banner) — shows which sections are shared
 ═══════════════════════════════════════════════════════════ */
-function showFailResult(sectionId, score, questions, correctFlags) {
-  hide(document.getElementById('questions-' + sectionId));
-  hide(document.getElementById('actions-' + sectionId));
-
-  var resultEl = document.getElementById('result-' + sectionId);
-
-  var failMessages = {
-    personal: {
-      es: 'El Sombrero Seleccionador no está convencido todavía... 🎩 Vuelve a intentarlo.',
-      en: 'The Sorting Hat isn\'t convinced yet... 🎩 Give it another try.'
-    },
-    experience: {
-      es: 'Interesante perfil, pero aún no es suficiente. 🧭 ¡Inténtalo de nuevo!',
-      en: 'Interesting profile, but not quite there yet. 🧭 Try again!'
-    },
-    skills: {
-      es: 'El sistema necesita un poco más de código antes de abrirse. 💻 ¡Otra oportunidad!',
-      en: 'The system needs a bit more code before it opens. 💻 One more shot!'
-    }
-  };
-
-  var msg = failMessages[sectionId] || { es: '¡Inténtalo de nuevo!', en: 'Try again!' };
-
-  // Build correct-answer review for wrong questions
-  var reviewHtml = '';
-  if (questions && questions.length) {
-    var wrongItems = '';
-    questions.forEach(function (q, idx) {
-      if (!correctFlags[idx]) {
-        var correctOpt = q.options[q.correct];
-        wrongItems +=
-          '<div class="answer-review-item">' +
-            '<p class="answer-review-q es">✗ ' + escapeHtml(q.q.es) + '</p>' +
-            '<p class="answer-review-q en">✗ ' + escapeHtml(q.q.en) + '</p>' +
-            '<p class="answer-review-correct es">✓ ' + escapeHtml(correctOpt.es) + '</p>' +
-            '<p class="answer-review-correct en">✓ ' + escapeHtml(correctOpt.en) + '</p>' +
-          '</div>';
-      }
-    });
-    if (wrongItems) {
-      reviewHtml =
-        '<div class="answer-review">' +
-          '<p class="answer-review-title es">Respuestas correctas:</p>' +
-          '<p class="answer-review-title en">Correct answers:</p>' +
-          wrongItems +
-        '</div>';
-    }
-  }
-
-  resultEl.innerHTML =
-    '<div class="result-score fail">' + score + '/3</div>' +
-    '<p class="result-title es">Casi... ¡pero no es suficiente!</p>' +
-    '<p class="result-title en">So close... but not quite!</p>' +
-    '<p class="result-msg es">' + msg.es + '</p>' +
-    '<p class="result-msg en">' + msg.en + '</p>' +
-    reviewHtml +
-    '<button class="btn btn-retry es" data-action="retry" data-section="' + escapeHtml(sectionId) + '"><i class="bi bi-arrow-repeat"></i> Intentar de nuevo</button>' +
-    '<button class="btn btn-retry en" data-action="retry" data-section="' + escapeHtml(sectionId) + '"><i class="bi bi-arrow-repeat"></i> Try again</button>';
-
-  show(resultEl);
-}
-
-/* ═══════════════════════════════════════════════════════════
-   RETRY QUIZ
-═══════════════════════════════════════════════════════════ */
-function retryQuiz(sectionId) {
-  var questions = drawQuestions(sectionId);
-  STATE.currentQuestions[sectionId] = questions;
-  renderQuestions(sectionId, questions);
-
-  hide(document.getElementById('result-' + sectionId));
-  show(document.getElementById('questions-' + sectionId));
-  show(document.getElementById('actions-' + sectionId));
-}
-
-/* ═══════════════════════════════════════════════════════════
-   PROGRESS SCORES (in banner)
-═══════════════════════════════════════════════════════════ */
-function updateScoreBoard(sectionId, scoreValue) {
-  // Store score
-  STATE.sections[sectionId].score = scoreValue;
+function updateScoreBoard(sectionId) {
+  // Mark this section as completed (answered)
+  STATE.sections[sectionId].completed = true;
 
   // Show visitor name in banner
   var nameEl = document.getElementById('progressVisitorName');
@@ -458,7 +384,7 @@ function updateScoreBoard(sectionId, scoreValue) {
     nameEl.classList.remove('hidden');
   }
 
-  // Rebuild per-section score chips
+  // Rebuild per-section chips
   var labels = {
     personal:   { es: 'Info Personal', en: 'Personal Info' },
     experience: { es: 'Experiencia',   en: 'Experience'    },
@@ -467,14 +393,12 @@ function updateScoreBoard(sectionId, scoreValue) {
 
   var html = '';
   ['personal', 'experience', 'skills'].forEach(function (id) {
-    var s = STATE.sections[id].score;
-    if (!s) return;
-    var passed = STATE.sections[id].unlocked || s === '★';
+    if (!STATE.sections[id].completed) return;
     html +=
-      '<div class="score-item' + (passed ? ' score-pass' : ' score-fail') + '">' +
+      '<div class="score-item score-pass">' +
         '<span class="score-label es">' + labels[id].es + '</span>' +
         '<span class="score-label en">' + labels[id].en + '</span>' +
-        '<span class="score-value">' + s + '</span>' +
+        '<span class="score-value"><i class="bi bi-check-lg"></i></span>' +
       '</div>';
   });
 

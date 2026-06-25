@@ -24,14 +24,14 @@ const TRACKER = {
    *   @param {string} data.email      — visitor's email
    *   @param {string} data.language   — 'ES' or 'EN'
    *   @param {string} data.section    — 'personal' | 'experience' | 'skills'
-   *   @param {string} data.q1         — question 1 text
-   *   @param {string} data.a1         — answer 1 text
-   *   @param {string} data.q2         — question 2 text
-   *   @param {string} data.a2         — answer 2 text
-   *   @param {string} data.q3         — question 3 text
-   *   @param {string} data.a3         — answer 3 text
-   *   @param {string} data.score      — e.g. '2/3'
-   *   @param {string} data.result     — 'Pass' or 'Fail'
+   *   @param {string} data.q1         — trivia question text
+   *   @param {string} data.a1         — trivia option chosen by the visitor
+   *   @param {string} data.q2         — personal question 1 text
+   *   @param {string} data.a2         — personal answer 1 (free text)
+   *   @param {string} data.q3         — personal question 2 text
+   *   @param {string} data.a3         — personal answer 2 (free text)
+   *   @param {string} data.score      — '✓ trivia' or '✗ trivia' (fun wink only)
+   *   @param {string} data.result     — 'Completado' / 'Completed'
    */
   log(data) {
     // Queue locally if URL has not been injected by the build step

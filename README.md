@@ -8,16 +8,21 @@ Deployable on Vercel as a static site — no build tools required.
 
 ## How It Works
 
-| Section | Quiz type | Pass rule |
-|---|---|---|
-| 🧙 Personal Info | Harry Potter trivia | ≥ 2/3 correct |
-| 💼 Experience | Personal & values questions | ≥ 2/3 correct |
-| ⚙️ Technical Skills | Tech knowledge questions | ≥ 2/3 correct |
+Each section asks the visitor **1 fun trivia question + 2 open questions about
+themselves**. The goal is to get to know the visitor, not to test them.
 
-- Visitors enter their **name and email** before starting any quiz.
-- Each section has a pool of **9 questions** — 3 are drawn randomly per attempt.
-- If they fail, a new set of 3 questions (not yet seen) is drawn for the retry.
-- All quiz submissions are logged to Google Sheets (once configured).
+| Section | Trivia (just a wink) | Personal questions (free text) |
+|---|---|---|
+| 🧙 Personal Info | Harry Potter | Tastes, personality, life |
+| 💼 Experience | World of work | Career, challenges, what they seek |
+| ⚙️ Technical Skills | Tech | Their relationship with technology |
+
+- Visitors enter their **name and email** before starting any section.
+- Per attempt: **1 random trivia** + **2 random personal questions** (drawn from
+  larger pools so they vary between visitors).
+- **Unlock rule:** pick a trivia option **and** write something in both text
+  boxes. Getting the trivia right is only a wink — it never blocks the unlock.
+- All answers (including the free-text ones) are logged to Google Sheets.
 
 ---
 
@@ -160,24 +165,35 @@ python -m http.server 3000
 
 ## Customising Questions
 
-Edit `js/questions.js` to update the question pools.
-Each question follows this structure:
+Edit `js/questions.js`. Each section has two pools — `trivia` and `personal`.
+
+A **trivia** question (multiple choice, has a correct answer used only for the
+fun wink):
 
 ```js
 {
-  q: {
-    es: "Pregunta en español",
-    en: "Question in English"
-  },
+  q: { es: "Pregunta en español", en: "Question in English" },
   options: [
     { es: "Opción A", en: "Option A" },
     { es: "Opción B", en: "Option B" },
     { es: "Opción C", en: "Option C" },
     { es: "Opción D", en: "Option D" }
   ],
-  correct: 0  // Index of the correct answer (0 = first option)
+  correct: 0  // index of the correct option (0 = first)
 }
 ```
+
+A **personal** question (free text — no options, no correct answer):
+
+```js
+{
+  q: { es: "¿Qué te hace perder la noción del tiempo?",
+       en: "What makes you lose track of time?" }
+}
+```
+
+Add as many as you like to each pool; 1 trivia + 2 personal are drawn at random
+per attempt.
 
 ---
 
