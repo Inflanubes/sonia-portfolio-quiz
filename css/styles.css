@@ -482,6 +482,10 @@ body.lang-en .hero-tag.en { display: inline-block; }
   border-radius: 4px;
 }
 
+.logo-circle {
+  border-radius: 50%;
+}
+
 /* ═══════════════════════════════════════════════════════════
    PROGRESS BANNER
 ═══════════════════════════════════════════════════════════ */
@@ -567,6 +571,24 @@ body.lang-en .hero-tag.en { display: inline-block; }
   color: var(--text-primary);
   margin-bottom: 0;
   letter-spacing: -0.01em;
+}
+
+.section-intro {
+  max-width: 680px;
+  margin: 1.1rem auto 0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.section-intro::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: var(--teal);
+  opacity: 0.6;
+  margin: 0 auto 1.1rem;
 }
 
 /* ═══════════════════════════════════════════════════════════
