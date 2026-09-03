@@ -287,6 +287,13 @@ body.lang-en .hero-tag.en { display: inline-block; }
   outline: none;
 }
 
+/* Validation messages: hidden until the input is marked invalid
+   (the generic language rule would otherwise force them visible) */
+body.lang-es .invalid-feedback.es,
+body.lang-en .invalid-feedback.en { display: none; }
+body.lang-es .is-invalid ~ .invalid-feedback.es,
+body.lang-en .is-invalid ~ .invalid-feedback.en { display: block; }
+
 .welcome-input.is-invalid {
   border-color: #ef5350;
   animation: shake 0.3s ease;
