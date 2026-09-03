@@ -19,7 +19,7 @@ const QUESTIONS = {
 
   /* ═══════════════════════════════════════════════════════
      SECTION 1 — PERSONAL INFO
-     Trivia: Harry Potter · Personal: tastes, personality, life
+     Trivia: Harry Potter · Personal: the company's people and culture
   ═══════════════════════════════════════════════════════ */
   personal: {
     trivia: [
@@ -118,32 +118,50 @@ const QUESTIONS = {
     personal: [
       {
         q: {
-          es: "¿Qué te hace perder la noción del tiempo cuando lo haces?",
-          en: "What makes you lose track of time when you do it?"
+          es: "¿Qué cualidades apreciáis especialmente en las personas con las que trabajáis?",
+          en: "Which qualities do you value most in the people you work with?"
         }
       },
       {
         q: {
-          es: "¿Cuál es un pequeño placer que te alegra cualquier día?",
-          en: "What's a small pleasure that brightens any day for you?"
+          es: "En vuestro día a día, ¿qué suele ser más importante: rapidez, precisión, autonomía, iniciativa o capacidad de adaptación?",
+          en: "In your day-to-day, what tends to matter most: speed, precision, autonomy, initiative or adaptability?"
         }
       },
       {
         q: {
-          es: "Si pudieras cenar con cualquier persona, viva o no, ¿con quién y por qué?",
-          en: "If you could have dinner with anyone, living or not, who would it be and why?"
+          es: "¿Qué debería conocer una persona para entender bien vuestra forma de trabajar?",
+          en: "What should someone know to really understand the way you work?"
         }
       },
       {
         q: {
-          es: "¿Qué es algo que poca gente sabe de ti?",
-          en: "What's something few people know about you?"
+          es: "¿Qué distingue vuestra cultura interna de la imagen que se percibe desde fuera?",
+          en: "How does your internal culture differ from the image seen from the outside?"
         }
       },
       {
         q: {
-          es: "Describe tu fin de semana ideal en una frase.",
-          en: "Describe your ideal weekend in one sentence."
+          es: "¿Cómo se comparten y contrastan puntos de vista diferentes dentro del equipo?",
+          en: "How are different points of view shared and challenged within the team?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué hace que una persona disfrute especialmente trabajando con vosotros?",
+          en: "What makes someone particularly enjoy working with you?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué aspectos de vuestra cultura requieren un mayor periodo de adaptación?",
+          en: "Which aspects of your culture take the longest to adapt to?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué diferencia a quienes funcionan especialmente bien en vuestro equipo?",
+          en: "What sets apart the people who thrive in your team?"
         }
       }
     ]
@@ -151,7 +169,7 @@ const QUESTIONS = {
 
   /* ═══════════════════════════════════════════════════════
      SECTION 2 — EXPERIENCE
-     Trivia: world of work · Personal: career, challenges, what you seek
+     Trivia: world of work · Personal: how the company works and decides
   ═══════════════════════════════════════════════════════ */
   experience: {
     trivia: [
@@ -170,14 +188,14 @@ const QUESTIONS = {
       },
       {
         q: {
-          es: "¿Cuántas horas tiene la semana laboral estándar en España?",
-          en: "How many hours are in the standard work week in Spain?"
+          es: "¿Qué empresa fundó Jeff Bezos en un garaje en 1994?",
+          en: "Which company did Jeff Bezos found in a garage in 1994?"
         },
         options: [
-          { es: "35", en: "35" },
-          { es: "40", en: "40" },
-          { es: "45", en: "45" },
-          { es: "48", en: "48" }
+          { es: "eBay",    en: "eBay" },
+          { es: "Amazon",  en: "Amazon" },
+          { es: "Netflix", en: "Netflix" },
+          { es: "PayPal",  en: "PayPal" }
         ],
         correct: 1
       },
@@ -222,14 +240,14 @@ const QUESTIONS = {
       },
       {
         q: {
-          es: "En inglés, ¿qué 'color de cuello' describe a los trabajadores de oficina?",
-          en: "In English, which 'collar colour' describes office workers?"
+          es: "¿De qué idioma viene la expresión 'currículum vitae'?",
+          en: "Which language does the expression 'curriculum vitae' come from?"
         },
         options: [
-          { es: "Blue collar (azul)",  en: "Blue collar" },
-          { es: "Pink collar (rosa)",  en: "Pink collar" },
-          { es: "White collar (blanco)", en: "White collar" },
-          { es: "Green collar (verde)", en: "Green collar" }
+          { es: "Griego", en: "Greek" },
+          { es: "Francés", en: "French" },
+          { es: "Latín",  en: "Latin" },
+          { es: "Italiano", en: "Italian" }
         ],
         correct: 2
       }
@@ -237,32 +255,74 @@ const QUESTIONS = {
     personal: [
       {
         q: {
-          es: "¿Cuál es el reto profesional del que estás más orgulloso/a?",
-          en: "What's the professional challenge you're most proud of?"
+          es: "¿Cómo se reconocería un buen resultado durante los primeros tres meses de colaboración?",
+          en: "What would a good result look like in the first three months of working together?"
         }
       },
       {
         q: {
-          es: "¿Qué buscas en tu próximo trabajo o proyecto?",
-          en: "What are you looking for in your next job or project?"
+          es: "Cuando coinciden varias prioridades, ¿cómo se decide qué debe resolverse primero?",
+          en: "When several priorities collide, how do you decide what gets solved first?"
         }
       },
       {
         q: {
-          es: "Cuéntame un momento en el que aprendiste algo importante de un error.",
-          en: "Tell me about a time you learned something important from a mistake."
+          es: "¿Cómo se toman las decisiones cuando existen diferentes puntos de vista?",
+          en: "How are decisions made when there are different points of view?"
         }
       },
       {
         q: {
-          es: "¿Qué tipo de equipo o ambiente saca lo mejor de ti?",
-          en: "What kind of team or environment brings out the best in you?"
+          es: "¿Qué nivel de autonomía tienen las personas para proponer y poner en marcha mejoras?",
+          en: "How much autonomy do people have to propose and implement improvements?"
         }
       },
       {
         q: {
-          es: "Si pudieras tener cualquier trabajo durante un día, ¿cuál sería?",
-          en: "If you could have any job for one day, what would it be?"
+          es: "¿Qué factores suelen generar más fricción o retrasos en los proyectos?",
+          en: "Which factors tend to cause the most friction or delays in projects?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué aspecto de vuestra forma de trabajar está evolucionando actualmente?",
+          en: "Which aspect of the way you work is currently evolving?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué proceso interno os gustaría mejorar?",
+          en: "Which internal process would you like to improve?"
+        }
+      },
+      {
+        q: {
+          es: "¿Cómo se comparte el feedback dentro del equipo y con qué frecuencia?",
+          en: "How is feedback shared within the team, and how often?"
+        }
+      },
+      {
+        q: {
+          es: "¿Cómo se coordinan los distintos perfiles implicados en un mismo proyecto?",
+          en: "How do the different roles involved in a project coordinate with each other?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué suele necesitar más tiempo del previsto cuando iniciáis un proyecto?",
+          en: "What usually takes longer than expected when you start a project?"
+        }
+      },
+      {
+        q: {
+          es: "Cuando hay desacuerdo o alguien comete un error, ¿cómo suele gestionarse?",
+          en: "When there is disagreement or someone makes a mistake, how is it usually handled?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué necesidad o proyecto te ha llevado a explorar mi perfil?",
+          en: "What need or project brought you to explore my profile?"
         }
       }
     ]
@@ -270,7 +330,7 @@ const QUESTIONS = {
 
   /* ═══════════════════════════════════════════════════════
      SECTION 3 — TECHNICAL SKILLS
-     Trivia: tech · Personal: your relationship with technology
+     Trivia: tech · Personal: the company's tools, processes and tech challenges
   ═══════════════════════════════════════════════════════ */
   skills: {
     trivia: [
@@ -369,32 +429,62 @@ const QUESTIONS = {
     personal: [
       {
         q: {
-          es: "¿Qué es lo último que has creado o construido y te ha gustado?",
-          en: "What's the last thing you created or built that you enjoyed?"
+          es: "¿Qué herramientas forman parte del trabajo diario y cuáles se utilizan de manera puntual?",
+          en: "Which tools are part of the daily work, and which are only used occasionally?"
         }
       },
       {
         q: {
-          es: "Si pudieras aprender cualquier tecnología o habilidad mañana, ¿cuál sería?",
-          en: "If you could learn any technology or skill tomorrow, what would it be?"
+          es: "¿Qué indicadores utilizáis para comprobar si una solución está funcionando?",
+          en: "Which indicators do you use to check whether a solution is working?"
         }
       },
       {
         q: {
-          es: "¿Qué app o herramienta no podrías quitar de tu día a día y por qué?",
-          en: "What app or tool could you not remove from your daily life, and why?"
+          es: "¿Qué margen tiene el equipo para revisar herramientas, automatizar procesos o proponer nuevas formas de trabajo?",
+          en: "How much room does the team have to review tools, automate processes or propose new ways of working?"
         }
       },
       {
         q: {
-          es: "¿Qué problema te encantaría resolver con tecnología?",
-          en: "What problem would you love to solve with technology?"
+          es: "¿Cuál es actualmente el principal reto técnico u operativo del equipo?",
+          en: "What is currently the team's main technical or operational challenge?"
         }
       },
       {
         q: {
-          es: "¿Eres más de planificarlo todo o de lanzarte y experimentar?",
-          en: "Are you more of a plan-everything person or a dive-in-and-experiment one?"
+          es: "¿Cómo se documenta y comparte el conocimiento dentro de la organización?",
+          en: "How is knowledge documented and shared within the organisation?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué parte de vuestro sistema o proceso tendría mayor impacto si se mejorara?",
+          en: "Which part of your system or process would have the biggest impact if improved?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué tareas repetitivas siguen requiriendo más tiempo del deseable?",
+          en: "Which repetitive tasks still take more time than they should?"
+        }
+      },
+      {
+        q: {
+          es: "¿Cómo decidís cuándo mantener una herramienta y cuándo sustituirla?",
+          en: "How do you decide when to keep a tool and when to replace it?"
+        }
+      },
+      {
+        q: {
+          es: "¿En qué áreas consideráis que la tecnología podría aportar más valor actualmente?",
+          en: "In which areas do you think technology could add the most value right now?"
+        }
+      },
+      {
+        q: {
+          es: "¿Qué proceso depende todavía demasiado del conocimiento manual o de la intervención de una persona?",
+          en: "Which process still depends too much on manual knowledge or on one person's intervention?"
         }
       }
     ]

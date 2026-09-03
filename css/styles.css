@@ -86,6 +86,11 @@ a:hover {
 ═══════════════════════════════════════════════════════════ */
 .es, .en { display: none; }
 
+/* Inactive language is ALWAYS hidden, even when a component sets its own
+   display (flex, inline-block...). Fixes ES/EN text showing together. */
+body.lang-es .en,
+body.lang-en .es { display: none !important; }
+
 body.lang-es .es  { display: block; }
 body.lang-es span.es,
 body.lang-es a.es,
@@ -1040,10 +1045,11 @@ body.lang-en .hero-tag.en { display: inline-block; }
   letter-spacing: 0.08em;
   color: var(--teal);
   margin-bottom: 0.5rem;
-  display: flex;
   align-items: center;
   gap: 5px;
 }
+body.lang-es .trivia-tag.es,
+body.lang-en .trivia-tag.en { display: flex; }
 
 /* Personal free-text answer box (reuses .open-answer-input look) */
 .personal-input {
