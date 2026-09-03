@@ -1,5 +1,5 @@
 /**
- * tracker.js — Google Sheets logging via Google Apps Script Web App
+ * tracker.js — Google Sheets logging + Telegram access alerts via Google Apps Script Web App
  *
  * HOW TO CONFIGURE:
  *   The URL below is injected at build time from the APPS_SCRIPT_URL environment variable.
@@ -14,6 +14,28 @@
 const TRACKER = {
 
   APPS_SCRIPT_URL: '__APPS_SCRIPT_URL__',
+
+  /**
+   * Notify (via Telegram, handled server-side by Apps Script) that a visitor
+   * has entered their name and email to access the CV.
+   *
+   * @param {Object} data
+   *   @param {string} data.timestamp  — ISO date string
+   *   @param {string} data.name       — visitor's name
+   *   @param {string} data.email      — visitor's email
+   *   @param {string} data.language   — 'ES' or 'EN'
+   */
+  notifyAccess(data) {
+    if (!this._isConfigured()) {
+      console.info('[Tracker] Apps Script URL not configured — access alert skipped.');
+      return;
+    }
+
+    var payload = Object.assign({ event: 'access' }, data);
+    this._post(payload).catch(function (err) {
+      console.warn('[Tracker] Failed to send access alert:', err);
+    });
+  },
 
   /**
    * Log a quiz submission to Google Sheets.
@@ -35,21 +57,29 @@ const TRACKER = {
    */
   log(data) {
     // Queue locally if URL has not been injected by the build step
-    if (!this.APPS_SCRIPT_URL || this.APPS_SCRIPT_URL.startsWith('__')) {
+    if (!this._isConfigured()) {
       console.info('[Tracker] Apps Script URL not configured — queuing locally.');
       this._queueLocally(data);
       return;
     }
 
-    fetch(this.APPS_SCRIPT_URL, {
-      method:  'POST',
-      mode:    'no-cors',       // Required for Apps Script (no CORS headers)
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(data)
-    }).catch(function (err) {
+    this._post(data).catch(function (err) {
       // On network failure, save locally so data is not lost
       console.warn('[Tracker] Failed to log submission — queuing locally:', err);
       TRACKER._queueLocally(data);
+    });
+  },
+
+  _isConfigured() {
+    return !!this.APPS_SCRIPT_URL && !this.APPS_SCRIPT_URL.startsWith('__');
+  },
+
+  _post(payload) {
+    return fetch(this.APPS_SCRIPT_URL, {
+      method:  'POST',
+      mode:    'no-cors',       // Required for Apps Script (no CORS headers)
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(payload)
     });
   },
 

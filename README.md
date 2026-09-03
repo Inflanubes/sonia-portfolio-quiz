@@ -23,6 +23,9 @@ themselves**. The goal is to get to know the visitor, not to test them.
 - **Unlock rule:** pick a trivia option **and** write something in both text
   boxes. Getting the trivia right is only a wink — it never blocks the unlock.
 - All answers (including the free-text ones) are logged to Google Sheets.
+- The moment a visitor enters their name and email, you get a **Telegram
+  alert** with both (sent server-side by the same Apps Script, so the bot
+  token never reaches the browser).
 
 ---
 
@@ -35,7 +38,7 @@ sonia-portfolio-quiz/
 │   └── styles.css      All styling (teal/dark theme, Bootstrap overrides)
 ├── js/
 │   ├── questions.js    All question pools (HP, personal, tech) — bilingual ES/EN
-│   ├── tracker.js      Google Sheets logging via Apps Script
+│   ├── tracker.js      Google Sheets logging + Telegram access alert via Apps Script
 │   └── main.js         Quiz engine, unlock flow, language toggle
 ├── assets/
 │   └── foto_cv.jpg     Profile photo (copy here from CV Sonia folder)
@@ -68,14 +71,27 @@ Create a new Google Sheet and add these column headers in row 1:
 ### Step 2 — Add the Apps Script
 
 In your Google Sheet, go to **Extensions → Apps Script**.
-Delete any existing code and paste the following:
+Delete any existing code and paste the following (it handles both the
+Sheets logging and the Telegram access alert):
 
 ```javascript
+// ── Telegram settings ──
+// Stored in Project Settings → Script Properties (never hardcode them here):
+//   TELEGRAM_BOT_TOKEN  → token given by @BotFather
+//   TELEGRAM_CHAT_ID    → your chat id (see README, step 2)
+
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var data  = JSON.parse(e.postData.contents);
+    var data = JSON.parse(e.postData.contents);
 
+    // 1) Access alert: visitor has just entered name + email → Telegram
+    if (data.event === 'access') {
+      sendTelegramAccessAlert(data);
+      return jsonResponse({ success: true, event: 'access' });
+    }
+
+    // 2) Quiz submission → Google Sheet row (unchanged)
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     sheet.appendRow([
       data.timestamp,
       data.name,
@@ -89,15 +105,66 @@ function doPost(e) {
       data.result
     ]);
 
-    return ContentService
-      .createTextOutput(JSON.stringify({ success: true }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonResponse({ success: true });
 
   } catch (error) {
-    return ContentService
-      .createTextOutput(JSON.stringify({ error: error.message }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return jsonResponse({ error: error.message });
   }
+}
+
+function sendTelegramAccessAlert(data) {
+  var props  = PropertiesService.getScriptProperties();
+  var token  = props.getProperty('TELEGRAM_BOT_TOKEN');
+  var chatId = props.getProperty('TELEGRAM_CHAT_ID');
+
+  if (!token || !chatId) {
+    throw new Error('TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID not set in Script Properties');
+  }
+
+  var when = data.timestamp
+    ? Utilities.formatDate(new Date(data.timestamp), 'Europe/Madrid', 'dd/MM/yyyy HH:mm')
+    : '';
+
+  var text =
+    '🔔 <b>Nuevo acceso a tu CV</b>\n' +
+    '👤 ' + escapeHtml(data.name  || '—') + '\n' +
+    '✉️ ' + escapeHtml(data.email || '—') + '\n' +
+    '🌐 ' + escapeHtml(data.language || '') +
+    (when ? '   🕒 ' + when : '');
+
+  var response = UrlFetchApp.fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+    method:             'post',
+    contentType:        'application/json',
+    payload:            JSON.stringify({ chat_id: chatId, text: text, parse_mode: 'HTML' }),
+    muteHttpExceptions: true
+  });
+
+  if (response.getResponseCode() !== 200) {
+    throw new Error('Telegram API error: ' + response.getContentText());
+  }
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Run this once from the editor (Run button) to check the Telegram setup.
+function testTelegram() {
+  sendTelegramAccessAlert({
+    timestamp: new Date().toISOString(),
+    name:      'Prueba',
+    email:     'prueba@ejemplo.com',
+    language:  'ES'
+  });
 }
 ```
 
@@ -120,6 +187,56 @@ APPS_SCRIPT_URL: 'REPLACE_WITH_YOUR_APPS_SCRIPT_URL',
 // After (your actual URL):
 APPS_SCRIPT_URL: 'https://script.google.com/macros/s/YOUR_ID_HERE/exec',
 ```
+
+---
+
+## Setup: Telegram Access Alerts
+
+Every time a visitor enters their name and email you receive a Telegram message
+like:
+
+```
+🔔 Nuevo acceso a tu CV
+👤 Ana García
+✉️ ana@empresa.com
+🌐 ES   🕒 03/09/2026 18:42
+```
+
+### Step 1 — Create the bot
+
+1. In Telegram, open **@BotFather** and send `/newbot`.
+2. Give it a name and a username (must end in `bot`).
+3. Copy the **token** it returns (looks like `123456789:AAF...`).
+
+### Step 2 — Get your chat id
+
+1. Open a chat with your new bot and send it any message (e.g. `hola`).
+2. In a browser, open (replace `<TOKEN>` with your token):
+
+   ```
+   https://api.telegram.org/bot<TOKEN>/getUpdates
+   ```
+3. Find `"chat":{"id":123456789,...}` in the response — that number is your
+   **chat id**.
+
+### Step 3 — Store both in Apps Script (never in the code)
+
+In the Apps Script editor: **Project Settings (⚙️) → Script Properties → Add
+script property**:
+
+| Property | Value |
+|---|---|
+| `TELEGRAM_BOT_TOKEN` | the token from BotFather |
+| `TELEGRAM_CHAT_ID` | your chat id |
+
+### Step 4 — Test and redeploy
+
+1. In the editor, select the `testTelegram` function and click **Run**.
+   The first time, Google will ask you to authorise the script (it now needs
+   permission to call external services). You should receive a test message.
+2. **Deploy → Manage deployments → ✏️ Edit → Version: New version → Deploy.**
+   The web app URL stays the same, so nothing changes on Vercel — but without
+   this step the live site keeps using the old code and no alerts are sent.
 
 ---
 

@@ -13,6 +13,7 @@
 const STATE = {
   visitorName:  '',
   visitorEmail: '',
+  accessNotified: false,   // Telegram access alert sent once per session
   lang: 'es',
   unlockedCount: 0,
   sections: {
@@ -109,6 +110,17 @@ function startSession() {
 
   STATE.visitorName  = name;
   STATE.visitorEmail = email;
+
+  // Telegram alert (via Apps Script): who has just accessed the CV.
+  if (!STATE.accessNotified) {
+    STATE.accessNotified = true;
+    TRACKER.notifyAccess({
+      timestamp: new Date().toISOString(),
+      name:      name,
+      email:     email,
+      language:  STATE.lang.toUpperCase()
+    });
+  }
 
   var modal = bootstrap.Modal.getInstance(document.getElementById('welcomeModal'));
   if (modal) modal.hide();
