@@ -71,15 +71,12 @@ function setLang(lang) {
   document.body.classList.remove('lang-es', 'lang-en');
   document.body.classList.add('lang-' + lang);
 
-  var btnEs = document.getElementById('btn-es');
-  var btnEn = document.getElementById('btn-en');
-
-  if (btnEs && btnEn) {
-    btnEs.classList.toggle('active', lang === 'es');
-    btnEn.classList.toggle('active', lang === 'en');
-    btnEs.setAttribute('aria-pressed', lang === 'es' ? 'true' : 'false');
-    btnEn.setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
-  }
+  // Sync every ES/EN toggle on the page (navbar + welcome modal)
+  document.querySelectorAll('.lang-btn[data-lang]').forEach(function (btn) {
+    var isActive = btn.dataset.lang === lang;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
 }
 
 /* ═══════════════════════════════════════════════════════════

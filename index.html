@@ -23,6 +23,10 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content welcome-modal-content">
       <div class="modal-body p-5">
+        <div class="lang-toggle welcome-lang-toggle" role="group" aria-label="Idioma / Language">
+          <button type="button" class="lang-btn active" data-lang="es" onclick="setLang('es')" aria-pressed="true" aria-label="Cambiar a español">ES</button>
+          <button type="button" class="lang-btn" data-lang="en" onclick="setLang('en')" aria-pressed="false" aria-label="Switch to English">EN</button>
+        </div>
         <div class="text-center mb-4">
           <div class="welcome-icon-wrap">
             <img src="foto_cv.jpg" alt="Sonia Lacarra Molina" class="welcome-photo" onerror="this.style.display='none'">
@@ -31,6 +35,17 @@
           <h2 class="cinzel welcome-title en" id="welcomeModalLabelEn">Access <span class="text-teal">Sonia</span>'s portfolio</h2>
           <p class="welcome-subtitle es">Introduce tus datos para acceder a mi CV</p>
           <p class="welcome-subtitle en">Enter your details to access my CV</p>
+          <button type="button" class="welcome-why-btn" data-bs-toggle="collapse" data-bs-target="#welcomeWhy" aria-expanded="false" aria-controls="welcomeWhy">
+            <i class="bi bi-info-circle"></i>
+            <span class="es">¿Por qué te pido tus datos?</span>
+            <span class="en">Why do I ask for your details?</span>
+          </button>
+          <div class="collapse" id="welcomeWhy">
+            <div class="welcome-why-text">
+              <p class="es">Estamos acostumbrados a entregar nuestros datos a cualquiera sin pensarlo dos veces. Este CV le da la vuelta a esa costumbre: si quieres saber algo más de mí, infórmame un poco sobre ti.</p>
+              <p class="en">We are used to handing over our details to anyone without a second thought. This CV turns that habit around: if you would like to know a little more about me, I would also like to know who you are. That way the conversation starts on equal footing.</p>
+            </div>
+          </div>
         </div>
 
         <div class="mb-3">
@@ -84,8 +99,8 @@
         </li>
         <li class="nav-item ms-lg-3">
           <div class="lang-toggle">
-            <button id="btn-es" class="lang-btn active" onclick="setLang('es')" aria-pressed="true" aria-label="Cambiar a español">ES</button>
-            <button id="btn-en" class="lang-btn" onclick="setLang('en')" aria-pressed="false" aria-label="Switch to English">EN</button>
+            <button id="btn-es" class="lang-btn active" data-lang="es" onclick="setLang('es')" aria-pressed="true" aria-label="Cambiar a español">ES</button>
+            <button id="btn-en" class="lang-btn" data-lang="en" onclick="setLang('en')" aria-pressed="false" aria-label="Switch to English">EN</button>
           </div>
         </li>
       </ul>
