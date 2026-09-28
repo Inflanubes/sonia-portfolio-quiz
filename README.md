@@ -33,17 +33,22 @@ themselves**. The goal is to get to know the visitor, not to test them.
 
 ```
 sonia-portfolio-quiz/
-├── index.html          Main portfolio page
-├── css/
-│   └── styles.css      All styling (teal/dark theme, Bootstrap overrides)
-├── js/
-│   ├── questions.js    All question pools (HP, personal, tech) — bilingual ES/EN
-│   ├── tracker.js      Google Sheets logging + Telegram access alert via Apps Script
-│   └── main.js         Quiz engine, unlock flow, language toggle
-├── assets/
-│   └── foto_cv.jpg     Profile photo (copy here from CV Sonia folder)
+├── index.html          Page shell: welcome modal, tab bar, lightbox, finale
+├── css/styles.css      All styling (black/white, turquoise accent)
+├── js/content.js       EVERY text on the site, ES + EN (jobs, projects, figures, fun facts)
+├── js/questions.js     Quiz question pools (HP, personal, tech) — bilingual
+├── js/tracker.js       Google Sheets logging + Telegram access alert via Apps Script
+├── js/main.js          Tabs/router, quiz gates, rewards, view rendering
+├── img/projects/       Project images (anonymised: fictitious client data only)
 └── README.md
 ```
+
+**Tabs and gates:** Sobre mí (`personal` quiz) · Experiencia + Proyectos (`experience` quiz) ·
+Skills (`skills` quiz) · Contacto (always open). The section ids sent to Google Sheets are the
+same as before, so the sheet layout does not change.
+
+**To edit content:** change `js/content.js` only. Testimonials go in `CONTENT.about.testimonials`;
+the block stays hidden while the list is empty.
 
 ---
 

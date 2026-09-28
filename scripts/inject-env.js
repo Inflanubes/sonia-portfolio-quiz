@@ -9,6 +9,13 @@ const path = require('path');
 
 const APPS_SCRIPT_URL = process.env.APPS_SCRIPT_URL || '';
 
+if (!APPS_SCRIPT_URL && process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production') {
+  // Preview deployments may not have the variable: publish anyway,
+  // tracking stays off (TRACKER queues locally) instead of failing the build.
+  console.warn('[inject-env] APPS_SCRIPT_URL not set in ' + process.env.VERCEL_ENV + ' — tracking disabled for this build.');
+  process.exit(0);
+}
+
 if (!APPS_SCRIPT_URL) {
   console.error('[inject-env] ERROR: APPS_SCRIPT_URL environment variable is not set.');
   console.error('  Local: add it to your .env file and run: node scripts/inject-env.js');
