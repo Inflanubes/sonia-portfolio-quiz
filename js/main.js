@@ -261,6 +261,7 @@ function renderView(keepScroll) {
   app.classList.remove('view-enter');
   void app.offsetWidth;
   app.classList.add('view-enter');
+  if (window.FX) FX.onRender(app, view);
 
   if (!keepScroll) window.scrollTo(0, 0);
   if (view === 'proyectos' && sub === 'lab') selectShortcut(STATE.activeShortcut || 'newtask');
@@ -633,12 +634,15 @@ function renderHome() {
   return (
     '<section class="view home">' +
       '<div class="home-hero">' +
+        '<canvas class="hero-dither" aria-hidden="true"></canvas>' +
         '<p class="mono-label home-eyebrow">' + e(h.eyebrow) + '</p>' +
         '<h1 class="mega">' + h.title.map(function (w) { return '<span>' + escapeHtml(w) + '</span>'; }).join('') + '</h1>' +
         '<p class="home-value">' + e(h.value) + '</p>' +
         '<p class="status"><span class="status-dot"></span>' + e(h.status) + '</p>' +
         '<a class="btn btn-primary" href="' + nextHref + '">' + escapeHtml(nextLabel) + ' <i class="bi bi-arrow-right"></i></a>' +
+        '<p class="scroll-hint mono">' + ui('Desliza para iniciar', 'Scroll to initiate') + '<i class="bi bi-chevron-double-down"></i></p>' +
       '</div>' +
+      renderMarquee() +
 
       '<div class="home-gate">' +
         '<div class="home-gate-text">' +
@@ -657,6 +661,13 @@ function renderHome() {
       '</div>' +
     '</section>'
   );
+}
+
+function renderMarquee() {
+  var tools = ['n8n', 'Make', 'GoHighLevel', 'Claude', 'OpenAI', 'Next.js', 'Supabase', 'Python',
+               'React', ui('Atajos de Apple', 'Apple Shortcuts'), 'Telegram', 'Azure Custom Vision', 'Agile'];
+  var row = tools.map(function (tl) { return '<span>' + escapeHtml(tl) + '</span><i>✦</i>'; }).join('');
+  return '<div class="marquee" aria-hidden="true"><div class="marquee-track">' + row + row + '</div></div>';
 }
 
 /* ═══════════════════════════════════════════════════════════
