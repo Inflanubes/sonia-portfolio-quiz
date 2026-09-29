@@ -14,8 +14,8 @@ const CONTENT = {
     eyebrow: { es: 'Sonia Lacarra Molina', en: 'Sonia Lacarra Molina' },
     title: ['TECHNICAL', 'PROCESS', 'ENGINEER'],
     value: {
-      es: 'Diseño y construyo procesos de transformación tecnológica. Desarrollo full stack con IA y automatizaciones (n8n, Make).',
-      en: 'I design and build technology transformation processes. AI-powered full-stack development and automations (n8n, Make).'
+      es: 'Audito, diseño y construyo procesos de transformación tecnológica. Desarrollo full stack con IA y automatizaciones (n8n, Make).',
+      en: 'I audit, design and build technology transformation processes. AI-powered full-stack development and automations (n8n, Make).'
     },
     status: {
       es: 'Abierta a nuevos retos · reubicación en Canadá o EE. UU.',
