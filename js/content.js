@@ -26,7 +26,7 @@ const CONTENT = {
       es: 'Lo habitual es que alguien lea tu CV sin que tú sepas nada de esa persona. Aquí cada pestaña se abre contándome algo de ti. Tres retos cortos, una pregunta divertida y dos sobre ti en cada uno.',
       en: 'Usually someone reads your CV while you know nothing about them. Here each tab opens by telling me something about you. Three short challenges, one fun question and two about you in each.'
     },
-    start: { es: 'Empezar por Sobre mí', en: 'Start with About me' }
+    start: { es: 'Empezar por Experiencia', en: 'Start with Experience' }
   },
 
   /* ═══════════════════════════════════════════════════════
@@ -62,8 +62,8 @@ const CONTENT = {
   /* Curiosity shown as a reward right after each unlock */
   rewards: {
     personal: {
-      es: 'Practico downhill. Por eso fui a Whistler, y he bajado en Portes du Soleil, Andorra, La Molina y los Pirineos. Mi primer proyecto, BeBanana, nació ahí: con casco integral, el reconocimiento facial no encuentra a nadie en las fotos.',
-      en: 'I ride downhill. That is why I went to Whistler, and I have ridden Portes du Soleil, Andorra, La Molina and the Pyrenees. My first project, BeBanana, was born there: with a full-face helmet, face recognition cannot find anyone in the photos.'
+      es: 'Practico downhill. Por eso fui a Whistler, y he montado en Portes du Soleil y en muchas más montañas. Mi primer proyecto, BeBanana, nació ahí: con casco integral, el reconocimiento facial no encuentra a nadie en las fotos.',
+      en: 'I ride downhill. That is why I went to Whistler, and I have ridden Portes du Soleil and many more mountains. My first project, BeBanana, was born there: with a full-face helmet, face recognition cannot find anyone in the photos.'
     },
     experience: {
       es: 'Tuve licencia en los dos únicos aviones de dos pisos del mundo: el A380 en Emirates y el B747 en Wamos Air.',

@@ -618,17 +618,17 @@ function closeLightbox() {
 function renderHome() {
   var h = CONTENT.home;
   var tabs = [
-    { href: '#sobre-mi',    gate: 'personal',   label: { es: 'Sobre mí', en: 'About me' } },
     { href: '#experiencia', gate: 'experience', label: { es: 'Experiencia', en: 'Experience' } },
     { href: '#proyectos',   gate: 'experience', label: { es: 'Proyectos', en: 'Projects' } },
     { href: '#skills',      gate: 'skills',     label: { es: 'Skills', en: 'Skills' } },
+    { href: '#sobre-mi',    gate: 'personal',   label: { es: 'Sobre mí', en: 'About me' } },
     { href: '#contacto',    gate: null,         label: { es: 'Contacto', en: 'Contact' } }
   ];
 
-  var next = GATES.filter(function (id) { return !STATE.sections[id].unlocked; })[0];
+  var next = ['experience', 'skills', 'personal'].filter(function (id) { return !STATE.sections[id].unlocked; })[0];
   var nextHref = next === 'personal' ? '#sobre-mi' : next === 'experience' ? '#experiencia' : next === 'skills' ? '#skills' : '#proyectos';
   var nextLabel = !next ? ui('Ver proyectos', 'See projects')
-    : next === 'personal' ? t(h.start)
+    : (next === 'experience' && STATE.unlockedCount === 0) ? t(h.start)
     : ui('Seguir con el siguiente reto', 'Continue with the next challenge');
 
   return (
@@ -636,7 +636,7 @@ function renderHome() {
       '<div class="home-hero">' +
         '<canvas class="hero-dither" aria-hidden="true"></canvas>' +
         '<p class="mono-label home-eyebrow">' + e(h.eyebrow) + '</p>' +
-        '<h1 class="mega">' + h.title.map(function (w) { return '<span>' + escapeHtml(w) + '</span>'; }).join('') + '</h1>' +
+        '<h1 class="mega">' + h.title.map(function (w) { return '<span data-word="' + escapeHtml(w) + '">' + escapeHtml(w) + '</span>'; }).join('') + '</h1>' +
         '<p class="home-value">' + e(h.value) + '</p>' +
         '<p class="status"><span class="status-dot"></span>' + e(h.status) + '</p>' +
         '<a class="btn btn-primary" href="' + nextHref + '">' + escapeHtml(nextLabel) + ' <i class="bi bi-arrow-right"></i></a>' +

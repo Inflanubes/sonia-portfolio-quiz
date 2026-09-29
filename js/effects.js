@@ -27,6 +27,10 @@
   function rand(n) { return Math.floor(Math.random() * n); }
 
   function cleanup() {
+    document.querySelectorAll('.mega .ch.sym, .mega .ch.gone').forEach(function (ch) {
+      if (ch.dataset.orig) ch.textContent = ch.dataset.orig;
+      ch.classList.remove('sym', 'gone');
+    });
     timers.forEach(function (id) { clearTimeout(id); clearInterval(id); });
     timers = [];
     observers.forEach(function (o) { o.disconnect(); });
@@ -83,7 +87,7 @@
     if (!words.length) return;
 
     words.forEach(function (w) {
-      var txt = w.textContent;
+      var txt = w.dataset.word || w.textContent;
       w.setAttribute('aria-label', txt);
       w.innerHTML = txt.split('').map(function (c) {
         return '<span class="ch" aria-hidden="true">' + c + '</span>';
@@ -125,7 +129,7 @@
     portraitLoading = true;
     var img = new Image();
     img.onload = function () {
-      var cols = 118;
+      var cols = 150;
       var rows = Math.round(cols * img.height / img.width);
       var c = document.createElement('canvas');
       c.width = cols; c.height = rows;
@@ -166,13 +170,22 @@
       // fit the portrait (contain), anchored bottom-centre
       var cell = Math.min(canvas.width / pt.w, canvas.height / pt.h);
       var offX = (canvas.width - cell * pt.w) / 2;
-      var offY = canvas.height - cell * pt.h;
+      var offY = (canvas.height - cell * pt.h) * 0.15;
       var band = null;
+      var nextBand = 0;
       var last = 0;
 
       function draw(ts) {
         if (ts - last < 90 && !REDUCED) { rafId = requestAnimationFrame(draw); return; }
         last = ts;
+        if (!REDUCED) {
+          if (!nextBand) nextBand = ts + 1800;
+          if (band && ts > band.until) band = null;
+          if (!band && ts > nextBand) {
+            band = { y: rand(pt.h), h: 2 + rand(6), dx: (Math.random() < 0.5 ? -1 : 1) * (2 + rand(6)), until: ts + 160 };
+            nextBand = ts + 2000 + rand(1600);
+          }
+        }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         var jitter = REDUCED ? 0 : 0.06;
         for (var y = 0; y < pt.h; y++) {
@@ -190,12 +203,6 @@
         if (!REDUCED) rafId = requestAnimationFrame(draw);
       }
 
-      if (!REDUCED) {
-        every(function () {
-          band = { y: rand(pt.h), h: 2 + rand(6), dx: (Math.random() < 0.5 ? -1 : 1) * (2 + rand(6)) };
-          later(function () { band = null; }, 160);
-        }, 2600);
-      }
       rafId = requestAnimationFrame(draw);
     });
   }
@@ -286,8 +293,9 @@
   document.addEventListener('DOMContentLoaded', initCursor);
   document.addEventListener('visibilitychange', function () {
     if (document.hidden && rafId) { cancelAnimationFrame(rafId); rafId = null; }
-    else if (!document.hidden && document.querySelector('.hero-dither')) {
-      window.FX.onRender(document.getElementById('app'));
+    else if (!document.hidden && !rafId) {
+      var app = document.getElementById('app');
+      if (app && app.querySelector('.hero-dither')) initDither(app);
     }
   });
 })();
