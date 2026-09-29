@@ -21,6 +21,7 @@
   var timers = [];      // cleared on every render
   var observers = [];
   var rafId = null;
+  var disposers = [];   // event listeners to remove on cleanup
 
   function later(fn, ms) { var id = setTimeout(fn, ms); timers.push(id); return id; }
   function every(fn, ms) { var id = setInterval(fn, ms); timers.push(id); return id; }
@@ -36,6 +37,8 @@
     observers.forEach(function (o) { o.disconnect(); });
     observers = [];
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    disposers.forEach(function (fn) { fn(); });
+    disposers = [];
   }
 
   function onVisible(els, fn, threshold) {
@@ -167,43 +170,122 @@
       canvas.width = Math.round(box.width * dpr);
       canvas.height = Math.round(box.height * dpr);
 
-      // fit the portrait (contain), anchored bottom-centre
       var cell = Math.min(canvas.width / pt.w, canvas.height / pt.h);
       var offX = (canvas.width - cell * pt.w) / 2;
       var offY = (canvas.height - cell * pt.h) * 0.15;
-      var band = null;
-      var nextBand = 0;
-      var last = 0;
+      var size = cell * 0.72;
+      var half = size / 2;
 
-      function draw(ts) {
-        if (ts - last < 90 && !REDUCED) { rafId = requestAnimationFrame(draw); return; }
-        last = ts;
-        if (!REDUCED) {
-          if (!nextBand) nextBand = ts + 1800;
-          if (band && ts > band.until) band = null;
-          if (!band && ts > nextBand) {
-            band = { y: rand(pt.h), h: 2 + rand(6), dx: (Math.random() < 0.5 ? -1 : 1) * (2 + rand(6)), until: ts + 160 };
-            nextBand = ts + 2000 + rand(1600);
-          }
+      // Every visible cell becomes a particle with a home position
+      var LEVELS = 6;
+      var bx = [], by = [], lum = [], bay = [], row = [], lvl = [];
+      for (var y = 0; y < pt.h; y++) {
+        for (var x = 0; x < pt.w; x++) {
+          var l = pt.lum[y * pt.w + x];
+          if (l < 0.04) continue;
+          bx.push(offX + x * cell + cell / 2);
+          by.push(offY + y * cell + cell / 2);
+          lum.push(l);
+          bay.push((BAYER[(y % 4) * 4 + (x % 4)] + 0.5) / 16);
+          row.push(y);
+          lvl.push(Math.min(LEVELS - 1, Math.floor(l * LEVELS)));
         }
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      var m = bx.length;
+      var ox = new Float32Array(m), oy = new Float32Array(m);
+      var vx = new Float32Array(m), vy = new Float32Array(m);
+      var on = new Uint8Array(m);
+      var byLevel = [];
+      for (var L = 0; L < LEVELS; L++) byLevel.push([]);
+      for (var k = 0; k < m; k++) byLevel[lvl[k]].push(k);
+      var colors = byLevel.map(function (_, i) {
+        return 'rgba(200,210,230,' + (0.25 + ((i + 0.5) / LEVELS) * 0.55).toFixed(2) + ')';
+      });
+      var accents = [];
+
+      var band = null, nextBand = 0, lastRoll = -1000;
+      var pointer = { x: -9999, y: -9999, vx: 0, vy: 0, t: 0, seen: false };
+
+      function reroll(ts) {
         var jitter = REDUCED ? 0 : 0.06;
-        for (var y = 0; y < pt.h; y++) {
-          var shift = (band && y >= band.y && y < band.y + band.h) ? band.dx : 0;
-          for (var x = 0; x < pt.w; x++) {
-            var l = pt.lum[y * pt.w + x];
-            if (l < 0.04) continue;
-            var threshold = (BAYER[(y % 4) * 4 + (x % 4)] + 0.5) / 16 + (Math.random() - 0.5) * jitter;
-            if (l < threshold) continue;
-            var accent = !REDUCED && Math.random() < 0.012;
-            ctx.fillStyle = accent ? 'rgba(0,188,212,0.9)' : 'rgba(200,210,230,' + (0.25 + l * 0.55).toFixed(2) + ')';
-            ctx.fillRect(offX + (x + shift) * cell, offY + y * cell, cell * 0.72, cell * 0.72);
-          }
+        accents = [];
+        for (var k = 0; k < m; k++) {
+          on[k] = lum[k] >= bay[k] + (Math.random() - 0.5) * jitter ? 1 : 0;
+          if (on[k] && !REDUCED && Math.random() < 0.012) accents.push(k);
         }
-        if (!REDUCED) rafId = requestAnimationFrame(draw);
+        if (REDUCED) return;
+        if (!nextBand) nextBand = ts + 1800;
+        if (band && ts > band.until) band = null;
+        if (!band && ts > nextBand) {
+          band = { y: rand(pt.h), h: 2 + rand(6), dx: (Math.random() < 0.5 ? -1 : 1) * (2 + rand(6)) * cell, until: ts + 160 };
+          nextBand = ts + 2000 + rand(1600);
+        }
       }
 
-      rafId = requestAnimationFrame(draw);
+      function physics(ts) {
+        var R = 120 * dpr, R2 = R * R;
+        var live = ts - pointer.t < 600;
+        for (var k = 0; k < m; k++) {
+          if (live) {
+            var dx = bx[k] + ox[k] - pointer.x, dy = by[k] + oy[k] - pointer.y;
+            var d2 = dx * dx + dy * dy;
+            if (d2 < R2) {
+              var d = Math.sqrt(d2) || 1;
+              var f = 1 - d / R; f = f * f;
+              // pushed away from the pointer + carried along its movement: a breath of air
+              vx[k] += (dx / d) * f * 3.2 * dpr + pointer.vx * f * 0.22;
+              vy[k] += (dy / d) * f * 3.2 * dpr + pointer.vy * f * 0.22;
+            }
+          }
+          if (ox[k] !== 0 || oy[k] !== 0 || vx[k] !== 0 || vy[k] !== 0) {
+            vx[k] += -ox[k] * 0.04; vy[k] += -oy[k] * 0.04;   // spring home
+            vx[k] *= 0.87; vy[k] *= 0.87;                     // air friction
+            ox[k] += vx[k]; oy[k] += vy[k];
+            if (Math.abs(ox[k]) < 0.05 && Math.abs(oy[k]) < 0.05 && Math.abs(vx[k]) < 0.05 && Math.abs(vy[k]) < 0.05) {
+              ox[k] = oy[k] = vx[k] = vy[k] = 0;
+            }
+          }
+        }
+        pointer.vx *= 0.8; pointer.vy *= 0.8;
+      }
+
+      function paint() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (var L = 0; L < LEVELS; L++) {
+          ctx.fillStyle = colors[L];
+          var list = byLevel[L];
+          for (var i = 0; i < list.length; i++) {
+            var k = list[i];
+            if (!on[k]) continue;
+            var sx = (band && row[k] >= band.y && row[k] < band.y + band.h) ? band.dx : 0;
+            ctx.fillRect(bx[k] + ox[k] + sx - half, by[k] + oy[k] - half, size, size);
+          }
+        }
+        ctx.fillStyle = 'rgba(0,188,212,0.9)';
+        for (var j = 0; j < accents.length; j++) {
+          var a = accents[j];
+          ctx.fillRect(bx[a] + ox[a] - half, by[a] + oy[a] - half, size, size);
+        }
+      }
+
+      if (REDUCED) { reroll(0); paint(); return; }
+
+      function onMove(ev) {
+        var r = canvas.getBoundingClientRect();
+        var x = (ev.clientX - r.left) * dpr, y = (ev.clientY - r.top) * dpr;
+        if (pointer.seen) { pointer.vx = x - pointer.x; pointer.vy = y - pointer.y; }
+        pointer.x = x; pointer.y = y; pointer.t = performance.now(); pointer.seen = true;
+      }
+      window.addEventListener('pointermove', onMove, { passive: true });
+      disposers.push(function () { window.removeEventListener('pointermove', onMove); });
+
+      function frame(ts) {
+        if (ts - lastRoll > 90) { reroll(ts); lastRoll = ts; }
+        physics(ts);
+        paint();
+        rafId = requestAnimationFrame(frame);
+      }
+      rafId = requestAnimationFrame(frame);
     });
   }
 
@@ -295,7 +377,11 @@
     if (document.hidden && rafId) { cancelAnimationFrame(rafId); rafId = null; }
     else if (!document.hidden && !rafId) {
       var app = document.getElementById('app');
-      if (app && app.querySelector('.hero-dither')) initDither(app);
+      if (app && app.querySelector('.hero-dither')) {
+        disposers.forEach(function (fn) { fn(); });
+        disposers = [];
+        initDither(app);
+      }
     }
   });
 })();
