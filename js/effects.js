@@ -93,7 +93,7 @@
       var txt = w.dataset.word || w.textContent;
       w.setAttribute('aria-label', txt);
       w.innerHTML = txt.split('').map(function (c) {
-        return '<span class="ch" aria-hidden="true">' + c + '</span>';
+        return '<span class="ch" aria-hidden="true" data-orig="' + c + '">' + c + '</span>';
       }).join('');
     });
     if (REDUCED) return;
@@ -103,10 +103,12 @@
       var chars = [].slice.call(w.querySelectorAll('.ch'));
       var len = 1 + rand(3);
       var from = rand(Math.max(1, chars.length - len));
-      var picked = chars.slice(from, from + len);
+      var picked = chars.slice(from, from + len).filter(function (ch) {
+        return !ch.classList.contains('sym') && !ch.classList.contains('gone');
+      });
+      if (!picked.length) return;
       var mode = Math.random() < 0.3 ? 'gone' : 'sym';
       picked.forEach(function (ch) {
-        ch.dataset.orig = ch.textContent;
         if (mode === 'sym') { ch.textContent = SYMBOLS[rand(SYMBOLS.length)]; ch.classList.add('sym'); }
         else ch.classList.add('gone');
       });
