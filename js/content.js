@@ -345,7 +345,7 @@ const CONTENT = {
       name: { es: 'Laboratorio personal', en: 'Personal lab' },
       year: '2026',
       kind: { es: 'Mi sistema · atajos, agentes y n8n', en: 'My system · shortcuts, agents and n8n' },
-      cover: 'img/projects/lab/bananinforms.jpg',
+      cover: 'img/projects/lab/bananaerrors.jpg',
       short: {
         es: 'Mi propio sistema: atajos de iPhone conectados a n8n, un equipo de cinco robots y un agente autónomo. Todo lo repetido lo hace una máquina.',
         en: 'My own system: iPhone shortcuts wired to n8n, a team of five robots and an autonomous agent. Anything repetitive is done by a machine.'
