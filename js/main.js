@@ -763,7 +763,7 @@ function renderExperience() {
     '<section class="view experience">' +
       '<header class="view-head">' +
         '<p class="mono-label">' + ui('Experiencia', 'Experience') + '</p>' +
-        '<h1 class="display">' + ui('De diez mil metros a los procesos.', 'From thirty thousand feet to processes.') + '</h1>' +
+        '<h1 class="display">' + ui('De doce mil metros a los procesos.', 'From forty thousand feet to processes.') + '</h1>' +
         '<p class="lead">' + ui('Pulsa cada etapa para ver el detalle.', 'Tap each role to see the details.') + '</p>' +
       '</header>' +
       '<div class="jobs">' + jobs + '</div>' +

@@ -97,8 +97,8 @@ const CONTENT = {
     title: { es: 'Pregunto antes de asumir.', en: 'I ask before I assume.' },
     story: [
       {
-        es: 'Lo aprendí a diez mil metros. Pasé casi cinco años en Emirates, primero como tripulante y después como jefa de cabina, al frente de la tripulación de turista o business. En mis últimos meses formé a nuevos tripulantes en seguridad y emergencias. En cada vuelo y en cada clase había más de doce nacionalidades. Todos hablábamos inglés, pero no todos entendíamos lo mismo. Allí aprendí que el problema casi nunca es el que parece, y que liderar es conseguir que el equipo te siga, respetando la cadena de mando, porque confía en ti y no solo porque deba.',
-        en: 'I learned it at thirty thousand feet. I spent almost five years at Emirates, first as cabin crew and then as cabin supervisor, leading the economy or business crew. In my last months I trained new crew in safety and emergency procedures. Every flight and every class had more than twelve nationalities. We all spoke English, but we did not all understand the same thing. There I learned that the problem is rarely the one it seems, and that leading means getting the team to follow you, within the chain of command, because they trust you and not only because they must.'
+        es: 'Lo aprendí a doce mil metros. Pasé casi cinco años en Emirates, primero como tripulante y después como jefa de cabina, al frente de la tripulación de turista o business. En mis últimos meses formé a nuevos tripulantes en seguridad y emergencias. En cada vuelo y en cada clase había más de doce nacionalidades. Todos hablábamos inglés, pero no todos entendíamos lo mismo. Allí aprendí que el problema casi nunca es el que parece, y que liderar es conseguir que el equipo te siga, respetando la cadena de mando, porque confía en ti y no solo porque deba.',
+        en: 'I learned it at forty thousand feet. I spent almost five years at Emirates, first as cabin crew and then as cabin supervisor, leading the economy or business crew. In my last months I trained new crew in safety and emergency procedures. Every flight and every class had more than twelve nationalities. We all spoke English, but we did not all understand the same thing. There I learned that the problem is rarely the one it seems, and that leading means getting the team to follow you, within the chain of command, because they trust you and not only because they must.'
       },
       {
         es: 'Mientras volaba terminé Ingeniería Informática. Cuando una lesión de oído me obligó a dejar de volar, bajé a tierra: primero al departamento internacional del RACE y después a GT Motive, donde empecé a automatizar los procesos que tenía alrededor. Me enganchó. Hice el Máster en Internet Business de ISDI, un máster Full Stack y un máster en IA y Automatizaciones. Cuando la academia donde me formé cerró dejando a muchos alumnos sin apoyo, fundé Protocol 418 para acompañarles gratis.',
@@ -237,31 +237,43 @@ const CONTENT = {
   education: [
     {
       title: { es: 'Máster en IA y Automatizaciones', en: 'Master in AI and Automation' },
-      org: 'IAW', year: '2025'
+      org: 'IAW', year: '2025',
+      detail: {
+        es: 'Automatización de procesos e inteligencia artificial aplicada a negocio. También di clase de automatización con Make en la propia academia.',
+        en: 'Process automation and AI applied to business. I also taught Make automation at the academy itself.'
+      }
     },
     {
       title: { es: 'Full Stack Developer', en: 'Full Stack Developer' },
       org: '4Geeks Academy', year: '2023 – 24',
       detail: {
-        es: 'Aquí terminé de construir la web de BeBanana, mi proyecto de fin del MIB.',
-        en: 'This is where I finished building the BeBanana web app, my MIB final project.'
+        es: 'Desarrollo web de principio a fin: HTML, CSS y JavaScript, React en el front, Python y Flask en el back, bases de datos con SQLAlchemy y APIs REST, con Git y metodologías ágiles (Scrum, Kanban). Aquí terminé de construir la web de BeBanana, mi proyecto de fin del MIB.',
+        en: 'End-to-end web development: HTML, CSS and JavaScript, React on the front end, Python and Flask on the back end, databases with SQLAlchemy and REST APIs, with Git and agile methodologies (Scrum, Kanban). This is where I finished building the BeBanana web app, my MIB final project.'
       }
     },
     {
       title: { es: 'Máster en Internet Business (MIB)', en: 'Master in Internet Business (MIB)' },
       org: 'ISDI', year: '2022 – 23',
       detail: {
-        es: 'Nueve meses de formación práctica en negocio digital. Estrategia y modelos de negocio, tecnología aplicada (IA, cloud, IoT, blockchain), datos y analítica, y transformación de organizaciones. Gestión de proyectos y de equipos con metodologías ágiles, liderazgo en la era digital y priorización de iniciativas. Proyecto final en equipo con Agile: una estrategia de transformación digital para una empresa real. Especialización en Growth Marketing y seminario de cierre en Harvard, Boston, sobre la IA y sus implicaciones socioeconómicas.',
-        en: 'Nine months of hands-on digital business training. Strategy and business models, applied technology (AI, cloud, IoT, blockchain), data and analytics, and organisational transformation. Project and team management with agile methodologies, leadership in the digital era and initiative prioritisation. Final team project run with Agile: a digital transformation strategy for a real company. Growth Marketing specialisation and a closing seminar at Harvard, Boston, on AI and its socioeconomic implications.'
+        es: 'Nueve meses de formación práctica en negocio digital. Estrategia y modelos de negocio, tecnología aplicada (IA, cloud, IoT, blockchain), datos y analítica, y transformación de organizaciones. Gestión de proyectos y de equipos con metodologías ágiles, liderazgo en la era digital y priorización de iniciativas. Especialización y trabajo de fin de máster en Growth Marketing, con BeBanana como proyecto final. Seminario de cierre en Harvard, Boston, sobre la IA y sus implicaciones socioeconómicas.',
+        en: 'Nine months of hands-on digital business training. Strategy and business models, applied technology (AI, cloud, IoT, blockchain), data and analytics, and organisational transformation. Project and team management with agile methodologies, leadership in the digital era and initiative prioritisation. Growth Marketing specialisation and final master’s project, with BeBanana as the final project. Closing seminar at Harvard, Boston, on AI and its socioeconomic implications.'
       }
     },
     {
       title: { es: 'Digital Transformation & Society', en: 'Digital Transformation & Society' },
-      org: 'Harvard University', year: '2023'
+      org: 'Harvard University', year: '2023',
+      detail: {
+        es: 'Seminario internacional de transformación digital de ISDI y el Real Colegio Complutense en Harvard. Una semana intensiva en inglés en el campus, con ponentes de Harvard y del MIT: disrupción e innovación con IA, creatividad y derechos de autor en la era de la IA, fintech y criptomonedas, medios y política, machine learning y futuro del trabajo. Con visitas al MIT Media Lab y al Harvard Innovation Lab.',
+        en: 'International digital transformation seminar run by ISDI and the Real Colegio Complutense at Harvard. One intensive week in English on campus, with speakers from Harvard and MIT: disruption and innovation with AI, creativity and copyright in the AI era, fintech and cryptocurrencies, media and politics, machine learning and the future of work. Including visits to the MIT Media Lab and the Harvard Innovation Lab.'
+      }
     },
     {
       title: { es: 'Ingeniería Informática', en: 'Computer Engineering degree' },
-      org: '', year: ''
+      org: 'UNED', year: '2017',
+      detail: {
+        es: 'Estudié la carrera a distancia en la UNED y la terminé en 2017, mientras volaba a tiempo completo.',
+        en: 'I studied the degree remotely at UNED and finished it in 2017, while flying full time.'
+      }
     }
   ],
 
