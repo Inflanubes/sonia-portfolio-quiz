@@ -418,6 +418,8 @@ body.just-unlocked .tab.active { box-shadow: 0 0 0 1px var(--accent); }
 .project-short { color: var(--text-2); }
 .project-more { color: var(--muted); font-size: 0.9rem; display: inline-flex; gap: 6px; align-items: center; transition: color 0.2s; }
 .project-card:hover .project-more { color: var(--accent); }
+.projects-foot { margin-top: 48px; display: flex; justify-content: center; }
+.projects-foot .btn { margin-top: 0; }
 
 .case { margin-top: 48px; border-top: 1px solid var(--line); }
 .case-row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--line); color: var(--text-2); }

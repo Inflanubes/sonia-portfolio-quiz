@@ -114,6 +114,15 @@ document.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('keydown', function (ev) {
     if (ev.key === 'Escape') { closeLightbox(); closeFinale(); }
   });
+  // Accordion: opening one job closes the others in its list ('toggle' doesn't bubble → capture)
+  document.addEventListener('toggle', function (ev) {
+    var job = ev.target;
+    if (!job.open || !job.classList || !job.classList.contains('job')) return;
+    var siblings = job.parentNode.querySelectorAll('details.job[open]');
+    for (var i = 0; i < siblings.length; i++) {
+      if (siblings[i] !== job) siblings[i].open = false;
+    }
+  }, true);
 
   window.addEventListener('hashchange', route);
   updateProgress();
@@ -798,6 +807,7 @@ function renderProjectList(all) {
         more +
       '</header>' +
       '<div class="project-grid">' + list.map(projectCard).join('') + '</div>' +
+      '<div class="projects-foot">' + more + '</div>' +
     '</section>'
   );
 }
