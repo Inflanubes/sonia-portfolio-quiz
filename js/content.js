@@ -164,10 +164,18 @@ const CONTENT = {
         en: 'I teach AI and automation to adults and kids, with hands-on classes people can apply the next day.'
       },
       bullets: [
-        { es: 'Profesora de automatización con Make en IAW.', en: 'Make automation instructor at IAW.' },
-        { es: 'Ocho formaciones de IA para empresas privadas.', en: 'Eight AI trainings for private companies.' },
         { es: 'Dos workshops de IA para niños en Arkeidia, El Molar.', en: 'Two AI workshops for kids at Arkeidia, El Molar.' },
-        { es: 'Clase Rooibos de Protocol 418 y clases abiertas en YouTube y Meet.', en: 'Protocol 418 Rooibos class and open classes on YouTube and Meet.' }
+        { es: 'Clase Rooibos de Protocol 418 y clases abiertas en YouTube y Meet.', en: 'Protocol 418 Rooibos class and open classes on YouTube and Meet.' },
+        {
+          es: 'Formaciones para el grupo de empresarios de la zona norte:',
+          en: 'Trainings for the business owners’ group of the northern area:',
+          sub: [
+            { es: 'Análisis de procesos y organización de la transformación: cómo prepararse y qué tener en cuenta para evaluar o poner en marcha un proyecto de automatización o IA.', en: 'Process analysis and organising the transformation: how to prepare and what to consider when assessing or launching an automation or AI project.' },
+            { es: 'Seguridad y realidad de los datos: cómo funcionan la IA y las plataformas no-code, y cómo evitar riesgos de fuga.', en: 'Data security and reality: how AI and no-code platforms work, and how to avoid data-leak risks.' },
+            { es: 'Qué es la IA y cómo aplicarla con seguridad: la formación más básica, para empezar.', en: 'What AI is and how to apply it safely: the most basic training, to get started.' }
+          ]
+        },
+        { es: 'Profesora de automatización con Make en IAW.', en: 'Make automation instructor at IAW.' }
       ],
       tags: ['IA', 'Make', 'n8n', { es: 'Diseño de formación', en: 'Training design' }]
     },

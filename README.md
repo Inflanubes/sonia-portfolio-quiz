@@ -40,6 +40,7 @@ sonia-portfolio-quiz/
 ├── js/tracker.js       Google Sheets logging + Telegram access alert via Apps Script
 ├── js/main.js          Tabs/router, quiz gates, rewards, view rendering
 ├── img/projects/       Project images (anonymised: fictitious client data only)
+├── CHANGELOG.md        What has changed on the site, newest first (in Spanish)
 └── README.md
 ```
 
@@ -49,6 +50,10 @@ same as before, so the sheet layout does not change.
 
 **To edit content:** change `js/content.js` only. Testimonials go in `CONTENT.about.testimonials`;
 the block stays hidden while the list is empty.
+
+**Experience and education:** both lists are accordions — opening one entry closes the others
+in the same list. A job bullet can carry a `sub` array to show a nested list under it. An
+education entry only unfolds if it has a `detail` text; without it, it shows as a plain row.
 
 ---
 

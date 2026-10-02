@@ -727,6 +727,13 @@ function renderTags(tags) {
   return '<ul class="tags">' + (tags || []).map(function (tg) { return '<li>' + e(tg) + '</li>'; }).join('') + '</ul>';
 }
 
+// A bullet may carry `sub`: a nested list shown under it
+function renderBullets(bullets) {
+  return '<ul class="bullets">' + bullets.map(function (b) {
+    return '<li>' + e(b) + (b.sub ? renderBullets(b.sub) : '') + '</li>';
+  }).join('') + '</ul>';
+}
+
 function renderExperience() {
   var jobs = CONTENT.experience.map(function (job, i) {
     return (
@@ -739,7 +746,7 @@ function renderExperience() {
         '</summary>' +
         '<div class="job-body">' +
           '<p>' + e(job.summary) + '</p>' +
-          '<ul class="bullets">' + job.bullets.map(function (b) { return '<li>' + e(b) + '</li>'; }).join('') + '</ul>' +
+          renderBullets(job.bullets) +
           renderTags(job.tags) +
         '</div>' +
       '</details>'
@@ -762,7 +769,7 @@ function renderExperience() {
   return (
     '<section class="view experience">' +
       '<header class="view-head">' +
-        '<p class="mono-label">' + ui('Experiencia', 'Experience') + '</p>' +
+        '<p class="mono-label">' + ui('Experiencia y formación', 'Experience and education') + '</p>' +
         '<h1 class="display">' + ui('De doce mil metros a los procesos.', 'From forty thousand feet to processes.') + '</h1>' +
         '<p class="lead">' + ui('Pulsa cada etapa para ver el detalle.', 'Tap each role to see the details.') + '</p>' +
       '</header>' +
