@@ -658,10 +658,14 @@ body.has-cursor input, body.has-cursor textarea { cursor: text; }
 .cursor-ring.is-hot { width: 54px; height: 54px; margin: -27px 0 0 -27px; border-color: var(--accent); background: var(--accent-bg); }
 
 @media (max-width: 980px) {
-  .hero-dither { width: 100%; right: 0; opacity: 0.45; }
+  .hero-dither { width: 72%; right: -16%; top: 1%; height: 50%; opacity: 0.8; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track, .scroll-hint .bi { animation: none; }
   .rv { opacity: 1; transform: none; }
+}
+
+@media (max-width: 380px) {
+  .tab { padding: 5px 4px; font-size: 0.66rem; letter-spacing: 0; }
 }
